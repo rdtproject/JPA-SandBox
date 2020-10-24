@@ -7,3 +7,6 @@ Antipatterns:
 
 Read later:
 - https://javabeat.net/jpa/
+
+Questions:
+- detach() vs clear()
