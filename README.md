@@ -13,3 +13,6 @@ Read later:
 
 Questions:
 - detach() vs clear()
+
+Reminder:
+- Bi-directional transactions are designed to avoid redundancy in DB. Owning side of the relation (DB table) contains foreign key. Owned side of the relation does have to contain any foreign key, but in JPA annotation required statement: mappedBy = "passport" where passport is the attribute name from the owning entity.
