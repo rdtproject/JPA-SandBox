@@ -1,5 +1,6 @@
 package com.tpolm.jpasandpit;
 
+import com.tpolm.jpasandpit.entity.Review;
 import com.tpolm.jpasandpit.repository.CourseRepository;
 import com.tpolm.jpasandpit.repository.StudentRepository;
 import org.slf4j.Logger;
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class JpaSandpitApplication implements CommandLineRunner {
@@ -26,12 +30,9 @@ public class JpaSandpitApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		//logger.info("Course details -> {}", courseRepository.findById(10001L));
-
-		//studentRepository.saveStudentWithPassport();
-
-//		Course course = courseRepository.findById(10002L);
-//		course.setNumber("Some updated value, dates expected to be changed");
-//		courseRepository.save(course);
+		List<Review> reviews = new ArrayList<>();
+		reviews.add(new Review("5", "Very gooood"));
+		reviews.add(new Review("1", "Very baaaaaaad"));
+		courseRepository.addReviewsForCourse(10003L, reviews);
 	}
 }

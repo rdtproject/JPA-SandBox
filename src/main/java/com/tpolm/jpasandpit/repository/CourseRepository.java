@@ -1,6 +1,7 @@
 package com.tpolm.jpasandpit.repository;
 
 import com.tpolm.jpasandpit.entity.Course;
+import com.tpolm.jpasandpit.entity.Review;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,5 +95,17 @@ public class CourseRepository {
         em.refresh(course1);
 
         LOGGER.info("playWIthEntityManager - stop");
+    }
+
+    public void addReviewsForCourse(Long courseId, List<Review> reviews) {
+        Course course = findById(courseId);
+
+        // Review is owning side of the relationship!
+        // so each review needs to have a proper reference to a course
+        for (Review review : reviews) {
+            course.addReview(review);
+            review.setCourse(course); // as owning part of the relation needs to know course
+            em.persist(review);
+        }
     }
 }
