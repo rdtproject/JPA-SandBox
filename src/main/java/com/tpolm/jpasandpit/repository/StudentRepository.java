@@ -1,5 +1,6 @@
 package com.tpolm.jpasandpit.repository;
 
+import com.tpolm.jpasandpit.entity.Course;
 import com.tpolm.jpasandpit.entity.Passport;
 import com.tpolm.jpasandpit.entity.Student;
 import org.slf4j.Logger;
@@ -64,6 +65,19 @@ public class StudentRepository {
         student.setPassport(passport);
 
         em.persist(student);
+    }
+
+    public Student insertStudentAndCOurse(Student student, Course course) {
+        em.persist(student);
+        em.persist(course);
+
+        student.addCourse(course);
+        course.addStudent(student);
+
+        // owning side of relation
+        em.persist(student);
+
+        return student;
     }
 
 }

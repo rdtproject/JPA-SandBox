@@ -1,6 +1,7 @@
 package com.tpolm.jpasandpit.repository;
 
 import com.tpolm.jpasandpit.JpaSandpitApplication;
+import com.tpolm.jpasandpit.entity.Course;
 import com.tpolm.jpasandpit.entity.Passport;
 import com.tpolm.jpasandpit.entity.Student;
 import org.junit.Test;
@@ -13,6 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,6 +55,26 @@ public class StudentRepositoryTest {
         Student student = passport.getStudent();
         assertNotNull(student.getId());
         assertNotNull(student.getName());
+    }
+
+    @Test
+    @Transactional
+    public void retrieveStudentAndCourses() {
+        Student student = repository.findById(2001L);
+        logger.info("Student -> {}", student);
+        logger.info("Student courses - {}", student.getCourses());
+        assertNotNull(student);
+        assertNotNull(student.getCourses());
+    }
+
+    @Test
+    @Transactional
+    public void insertStudentAndCourseTest() {
+        Student student = repository.insertStudentAndCOurse(new Student("Jack"),
+                new Course("Microservices in no steps"));
+        assertNotNull(student);
+        assertNotNull(student.getCourses());
+        assertTrue(student.getCourses().size() == 1);
     }
 
 }
