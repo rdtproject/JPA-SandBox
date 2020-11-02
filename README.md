@@ -27,4 +27,4 @@ Cascade types
 - https://www.baeldung.com/jpa-cascade-types 
 
 Read later
-- DeleteOrphan, CascadeType
+- DeleteOrphan
