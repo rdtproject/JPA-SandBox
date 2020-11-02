@@ -23,5 +23,8 @@ General reminder:
 - @...-to-one => always EAGER fetching by default
 - @...-to-many -> always LAZY fetching by default
 
+Cascade types
+- https://www.baeldung.com/jpa-cascade-types 
+
 Read later
 - DeleteOrphan, CascadeType
