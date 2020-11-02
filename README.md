@@ -22,3 +22,6 @@ General reminder:
 
 - @...-to-one => always EAGER fetching by default
 - @...-to-many -> always LAZY fetching by default
+
+Read later
+- DeleteOrphan, CascadeType
