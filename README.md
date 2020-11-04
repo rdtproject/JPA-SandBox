@@ -72,5 +72,5 @@ You can tell if you need one or the other by answering this questions: is there 
 
 If yes, then the base class is in fact an entity, and you should use entity inheritance. If no, then the base class is in fact a class that contains attributes and methods that are common to several unrelated entities, and you should use a mapped superclass.
 
-Read later
-- DeleteOrphan
+## DeleteOrphan
+- ????
