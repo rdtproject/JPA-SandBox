@@ -28,7 +28,7 @@ Cascade types
 - https://www.baeldung.com/jpa-cascade-types 
 
 Inheritence strategy
-- @Inheritance(strategy = InheritanceType.SINGLE_TABLE) - Default one. Efficient as only one DB table, but creates mess with data integrity in DB: nullable columns as not each Object sub type in hierachy implements the same attributes
+- @Inheritance(strategy = InheritanceType.SINGLE_TABLE) - Default one. Efficient as only one DB table, but creates mess with data integrity in DB: nullable columns as not each Object sub type in hierachy implements the same attributes. In other words no joins required (performance) but nullable columns (data integrity issue)
 - @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 - @Inheritance(strategy = InheritanceType.JOINED)
 
