@@ -52,5 +52,14 @@ public abstract class Employee {
 @MappedSuperclass  
 public abstract class Employee {  
 
+- @MappedSuperclass vs @Inheritance
+MappedSuperClass must be used to inherit properties, associations, and methods.
+
+Entity inheritance must be used when you have an entity, and several sub-entities.
+
+You can tell if you need one or the other by answering this questions: is there some other entity in the model which could have an association with the base class?
+
+If yes, then the base class is in fact an entity, and you should use entity inheritance. If no, then the base class is in fact a class that contains attributes and methods that are common to several unrelated entities, and you should use a mapped superclass.
+
 Read later
 - DeleteOrphan
