@@ -47,6 +47,10 @@ public abstract class Employee {
 @Inheritance(strategy = InheritanceType.JOINED)  
 public abstract class Employee {  
 
+- @MappedSuperclass - this is no longer a hierarchy. It is not an entity as well. It just defined common parts for another objects, but these objects are not related. So SQL query has to address each concrete class individualy, there is no longer entity called Employee.
+
+@MappedSuperclass  
+public abstract class Employee {  
 
 Read later
 - DeleteOrphan
