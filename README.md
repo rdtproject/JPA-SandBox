@@ -58,8 +58,10 @@ public abstract class Employee {
 ## @MappedSuperclass
 - this is no longer a hierarchy. It is not an entity as well. It just defined common parts for another objects, but these objects are not related. So SQL query has to address each concrete class individualy, there is no longer entity called Employee.
 
+```java
 @MappedSuperclass  
 public abstract class Employee {  
+```
 
 ### @MappedSuperclass vs @Inheritance
 MappedSuperClass must be used to inherit properties, associations, and methods.
