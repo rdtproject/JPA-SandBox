@@ -28,15 +28,24 @@ Cascade types
 - https://www.baeldung.com/jpa-cascade-types 
 
 Inheritence strategy
-- @Inheritance(strategy = InheritanceType.SINGLE_TABLE) - Default one. Efficient as only one DB table, but creates mess with data integrity in DB: nullable columns as not each Object sub type in hierachy implements the same attributes. In other words no joins required (performance) but nullable columns (data integrity issue)
+- @Inheritance(strategy = InheritanceType.SINGLE_TABLE) - Default one, adding additional descriptor column do DB (just a string). Efficient as only one DB table, but creates mess with data integrity in DB: nullable columns as not each Object sub type in hierachy implements the same attributes. In other words no joins required (performance) but nullable columns (data integrity issue)
 
 @Entity  
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)  
 @DiscriminatorColumn(name = "EmployeeType")  
 public abstract class Employee {  
 
-- @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-- @Inheritance(strategy = InheritanceType.JOINED)
+- @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) - User dedicated table per each CONCRETE class. Query collecting all data uses UNION in DB.Disadvantage: if concrete classes have some common columns, these columns will be repeated in each DB Table. Redundancy - with 10 subclasses, 10 different tables, each with the same column if each concrete class shares the same attribute.
+
+@Entity  
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)  
+public abstract class Employee {  
+
+- @Inheritance(strategy = InheritanceType.JOINED) - Creates one common DB table collecting common atributes in dedicated columns and additional tables per concrete classes. Uses join for selects, performance wise not good, but completely removes data redundancy.
+
+@Entity  
+@Inheritance(strategy = InheritanceType.JOINED)  
+public abstract class Employee {  
 
 
 Read later
