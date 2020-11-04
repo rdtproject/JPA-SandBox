@@ -29,6 +29,12 @@ Cascade types
 
 Inheritence strategy
 - @Inheritance(strategy = InheritanceType.SINGLE_TABLE) - Default one. Efficient as only one DB table, but creates mess with data integrity in DB: nullable columns as not each Object sub type in hierachy implements the same attributes. In other words no joins required (performance) but nullable columns (data integrity issue)
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "EmployeeType")
+public abstract class Employee {
+
 - @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 - @Inheritance(strategy = InheritanceType.JOINED)
 
