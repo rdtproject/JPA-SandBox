@@ -27,5 +27,12 @@ Cascade types
 - Entity relationships often depend on the existence of another entity — for example, the Person–Address relationship. Without the Person, the Address entity doesn't have any meaning of its own. When we delete the Person entity, our Address entity should also get deleted. Cascading is the way to achieve this. When we perform some action on the target entity, the same action will be applied to the associated entity.
 - https://www.baeldung.com/jpa-cascade-types 
 
+Inheritence strategy
+- @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+Default one
+- @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+- @Inheritance(strategy = InheritanceType.JOINED)
+
+
 Read later
 - DeleteOrphan
