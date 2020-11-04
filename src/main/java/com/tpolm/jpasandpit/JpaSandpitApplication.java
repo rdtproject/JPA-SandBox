@@ -1,9 +1,8 @@
 package com.tpolm.jpasandpit;
 
-import com.tpolm.jpasandpit.entity.Course;
-import com.tpolm.jpasandpit.entity.Review;
-import com.tpolm.jpasandpit.entity.Student;
+import com.tpolm.jpasandpit.entity.*;
 import com.tpolm.jpasandpit.repository.CourseRepository;
+import com.tpolm.jpasandpit.repository.EmployeeRepository;
 import com.tpolm.jpasandpit.repository.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +27,9 @@ public class JpaSandpitApplication implements CommandLineRunner {
 	@Autowired
 	private StudentRepository studentRepository;
 
+	@Autowired
+	private EmployeeRepository employeeRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(JpaSandpitApplication.class, args);
 	}
@@ -39,12 +42,9 @@ public class JpaSandpitApplication implements CommandLineRunner {
 //		reviews.add(new Review("1", "Very baaaaaaad"));
 //		courseRepository.addReviewsForCourse(10003L, reviews);
 
-		Course course = courseRepository.findById(10002L);
-		for (Student student : course.getStudents()) {
-			student.getCourses().remove(course);
-		}
-		course.getStudents().clear();
-		courseRepository.deleteById(course.getId());
+		employeeRepository.insert(new PartTimeEmployee("Jack",  new BigDecimal("50")));
+		employeeRepository.insert(new FullTimeEmployee("Srack",  new BigDecimal("10000")));
 
+		logger.info("Employees -> {}", employeeRepository.getEmployees());
 	}
 }
