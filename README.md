@@ -28,8 +28,7 @@ Cascade types
 - https://www.baeldung.com/jpa-cascade-types 
 
 Inheritence strategy
-- @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-Default one
+- @Inheritance(strategy = InheritanceType.SINGLE_TABLE) - Default one
 - @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 - @Inheritance(strategy = InheritanceType.JOINED)
 
