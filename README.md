@@ -74,3 +74,6 @@ If yes, then the base class is in fact an entity, and you should use entity inhe
 
 ## DeleteOrphan
 - ????
+
+## @EntityListeners
+- ???
