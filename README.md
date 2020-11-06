@@ -91,3 +91,10 @@ select c, s from Course c LEFT JOIN c.students s
 ```sql
 select c, s from Course c JOIN c.students s
 ```
+
+## CROSS "JOIN"
+- Will return all students mixed with all possible courses
+
+```sql
+select c, s from Course c, Student s
+```
