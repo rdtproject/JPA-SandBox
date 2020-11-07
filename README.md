@@ -118,7 +118,7 @@ Concepts to understand.
 - Read uncomitted. Any transaction reads any data wheder it is committed or not. As soon as transaction changes the data, another transactions can read this data.
 - Read committed. Transaction can read data only if it is already committed by another transaction. In other words as soon as transaction A is doing something with specific values, all other transactions cannot read these values (so each value is locked until transaction A commits).
 - Repeatable read. Locks not only values modified during transaction, but also any data which was read, e.g. the whole DB row. So if transaction A read row 121 from DB, this whole row will not be available to any other transaction. As soon as transaction A commits, a lock from this row will be removed and it will be enabled to other transactions.
-- Serializable
+- Serializable. Having query e.g. Select * from Person p where p.age between 5 and 55. A lock is created for all rows matching this constraint. Whenever another transaction is trying to insert / modify data which satisfied this constraint it won't be able. So called table lock.
 
 n/a | Dirty read | Non repeatable read | Phantom read
 -- | ---------- | ------------------- | ------------
