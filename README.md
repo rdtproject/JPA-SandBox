@@ -79,21 +79,21 @@ If yes, then the base class is in fact an entity, and you should use entity inhe
 - ???
 
 ## Joins
-### JOIN (INNER JOIN)
+### JOIN (inner join)
 - Students s JOIN Courses c will skip students which do not have assigned any courses
 
 ```sql
 select c, s from Course c JOIN c.students s
 ```
 
-### LEFT JOIN (OUTER JOIN)
+### LEFT JOIN (outer join)
 - Students s LEFT JOIN Courses c will return students even if some of them do not have assigned any courses
 
 ```sql
 select c, s from Course c LEFT JOIN c.students s
 ```
 
-### CROSS "JOIN"
+### CROSS "JOIN" (not really a join)
 - Will return all students mixed with all possible courses
 
 ```sql
