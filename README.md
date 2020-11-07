@@ -109,5 +109,7 @@ Properties in transaction management.
 - Durability. If transaction succeeds, its results should be permanent (persisted). 
 
 ### Dirty, phantom, non repeatable reads
-- Dirty read. Transaction B is reading value modified by transaction A, before A is commited. In case A fails, it will rollback its modified value but B will not know about it.
-- Non repeatable read. When I am reading twice the same value during transaction each time I am getting different results (as another transactions changed the value in the meantime).
+#### Dirty read
+Transaction 2 reads a value which was modified by transaction 1 before transaction 1 was committed. Transaction is reading a value which has been modified by another transaction, and this another transaction did not commit its changes yet. In case this other transaction fails, it will rollback modified value and current transaction will. 
+- Non repeatable read. When I am reading twice the same value during transaction each time I am getting different results (as another transactions changed the value in the meantime). Transaction tries to retrieve the same data twice and it gets two different values during the same transaction.
+- Phantom read. In the different time I am getting different nr of rows within transaction (e.g. to Person table another transactions are inserting data, so each time I am quering for list of persons, I am getting different amount of results)
