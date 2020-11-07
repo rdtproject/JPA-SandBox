@@ -78,21 +78,22 @@ If yes, then the base class is in fact an entity, and you should use entity inhe
 ## @EntityListeners
 - ???
 
-## LEFT JOIN
+## Joins
+### LEFT JOIN
 - Students s LEFT JOIN Courses c will return students even if some of them do not have assigned any courses
 
 ```sql
 select c, s from Course c LEFT JOIN c.students s
 ```
 
-## JOIN = INNER JOIN
+### JOIN = INNER JOIN
 - Students s JOIN Courses c will skip students which do not have assigned any courses
 
 ```sql
 select c, s from Course c JOIN c.students s
 ```
 
-## CROSS "JOIN"
+### CROSS "JOIN"
 - Will return all students mixed with all possible courses
 
 ```sql
