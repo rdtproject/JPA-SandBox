@@ -121,9 +121,9 @@ Important concepts related with DB isolation.
 - Repeatable read. Locks not only values modified during transaction, but also any data which was read, e.g. the whole DB row. So if transaction A read row 121 from DB, this whole row will not be available to any other transaction. As soon as transaction A commits, a lock from this row will be removed and it will be enabled to other transactions.
 - Serializable. Having query e.g. Select * from Person p where p.age between 5 and 55. A lock is created for all rows matching this constraint. Whenever another transaction is trying to insert / modify data which satisfied this constraint it won't be able. So called table lock.
 
-n/a | Dirty read | Non repeatable read | Phantom read
--- | ---------- | ------------------- | ------------
-**Read uncommitted** | Possible | Possible | Possible 
-**Read committed** | Solved | Possible | Possible 
-**Repeatable read** | Solved | Solved | Possible 
-**Serializable** | Solved | Solved | Solved 
+n/a | Dirty read | Non repeatable read | Phantom read | Real world
+-- | ---------- | ------------------- | ------------ | -----------
+**Read uncommitted** | Possible | Possible | Possible | 
+**Read committed** | Solved | Possible | Possible | This one is used
+**Repeatable read** | Solved | Solved | Possible | 
+**Serializable** | Solved | Solved | Solved | Very slow performance
