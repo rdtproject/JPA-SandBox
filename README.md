@@ -103,7 +103,7 @@ select c, s from Course c, Student s
 ## Transactions
 ### ACID
 Properties in transaction management.
-- A
-- C
-- I
-- D
+- Atomicity. Complete all, or nothing.
+- Consistency. Keeping system in the consistent state, independently if the transaction succeeds or fails. 
+- Isolation. How parallel transactions are independent from each other. Also in what scope changes made by one transaction are visible to the other transactions
+- Durability. If transaction succeeds, its results should be permanent (persisted). 
