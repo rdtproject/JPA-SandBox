@@ -144,3 +144,7 @@ Diverse operations as below can be handled by single Spring transaction. It cann
 // mq call
 ```
 
+Global transaction isolation level can be set up for Hibernate, e.g.:
+```java
+spring.jpa.properties.hibernate.connection.isolation=2
+```
