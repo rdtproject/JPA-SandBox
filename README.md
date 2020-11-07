@@ -98,3 +98,11 @@ select c, s from Course c JOIN c.students s
 ```sql
 select c, s from Course c, Student s
 ```
+
+## Transactions
+### ACID
+Properties in transaction management.
+- A
+- C
+- I
+- D
