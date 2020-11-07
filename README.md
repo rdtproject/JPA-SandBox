@@ -119,6 +119,10 @@ Concepts to understand.
 - Read committed.
 - Repeatable read.
 - Serializable
-| df | Dirty read | Non repeatable read | Phantom read |
-|-- |-- |-- |-- |
-|Read uncommitted | Possible | Possible | Possible |
+
+n/a | Dirty read | Non repeatable read | Phantom read
+-- | ---------- | ------------------- | ------------
+Read uncommitted | Possible | Possible | Possible 
+Read committed | Solved | Possible | Possible 
+Repeatable read | Solved | Solved | Possible 
+Serializable | Solved | Solved | Solved 
