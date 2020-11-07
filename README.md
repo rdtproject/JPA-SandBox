@@ -124,6 +124,6 @@ Important concepts related with DB isolation.
 n/a | Dirty read | Non repeatable read | Phantom read | Real world
 -- | ---------- | ------------------- | ------------ | -----------
 **Read uncommitted** | Possible | Possible | Possible | 
-**Read committed** | Solved | Possible | Possible | This one is used
+**Read committed** | Solved | Possible | Possible | This one is used in most of the projects
 **Repeatable read** | Solved | Solved | Possible | 
 **Serializable** | Solved | Solved | Solved | Very slow performance
