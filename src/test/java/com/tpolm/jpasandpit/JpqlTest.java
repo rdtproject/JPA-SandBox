@@ -17,9 +17,9 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class JpqlTests {
+class JpqlTest {
 
-    Logger logger = LoggerFactory.getLogger(JpqlTests.class);
+    Logger logger = LoggerFactory.getLogger(JpqlTest.class);
 
     @Autowired
     EntityManager em;
