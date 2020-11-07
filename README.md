@@ -107,3 +107,7 @@ Properties in transaction management.
 - Consistency. Keeping system in the consistent state, independently if the transaction succeeds or fails. 
 - Isolation. How parallel transactions are independent from each other. Also in what scope changes made by one transaction are visible to the other transactions
 - Durability. If transaction succeeds, its results should be permanent (persisted). 
+
+### Dirty, phantom, non repeatable reads
+- Dirty read. Transaction B is reading value modified by transaction A, before A is commited. In case A fails, it will rollback its modified value but B will not know about it.
+- Non repeatable read. When I am reading twice the same value during transaction each time I am getting different results (as another transactions changed the value in the meantime).
