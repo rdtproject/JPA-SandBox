@@ -132,7 +132,7 @@ n/a | Dirty read | Non repeatable read | Phantom read | Real world
 Transaction engine | Transaction type | Specifics
 -- | ---------- | --------
 javax.transaction.Transactional | JPA | Can handle singe DB communication.
-org.springframework.transaction.annotation.Transactional | Spring | Can handle in single transaction different DBs, MQs, plus offert transaction isolation level.
+org.springframework.transaction.annotation.Transactional | Spring | Can handle in single transaction different DBs, MQs. Allows to set transaction isolation level.
 
 Diverse operations as below can be handled by single Spring transaction. It cannot be handled by JPA transaction.
 ```java
