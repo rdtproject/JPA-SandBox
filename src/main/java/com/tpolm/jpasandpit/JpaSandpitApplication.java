@@ -37,14 +37,6 @@ public class JpaSandpitApplication implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
-//		List<Review> reviews = new ArrayList<>();
-//		reviews.add(new Review("5", "Very gooood"));
-//		reviews.add(new Review("1", "Very baaaaaaad"));
-//		courseRepository.addReviewsForCourse(10003L, reviews);
 
-		employeeRepository.insert(new PartTimeEmployee("Jack",  new BigDecimal("50")));
-		employeeRepository.insert(new FullTimeEmployee("Srack",  new BigDecimal("10000")));
-
-		logger.info("Employees -> {}", employeeRepository.getEmployees());
 	}
 }

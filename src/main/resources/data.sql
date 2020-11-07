@@ -16,7 +16,7 @@ insert into review(id, rating, description, course_id) values (5003, '2', 'Borin
 
 insert into student_course(student_id, course_id) values(2001, 10001);
 insert into student_course(student_id, course_id) values(2001, 10002);
-insert into student_course(student_id, course_id) values(2001, 10003);
+insert into student_course(student_id, course_id) values(2001, 10002);
 insert into student_course(student_id, course_id) values(2002, 10001);
-insert into student_course(student_id, course_id) values(2002, 10002);
-insert into student_course(student_id, course_id) values(2003, 10003);
+insert into student_course(student_id, course_id) values(2002, 10001);
+insert into student_course(student_id, course_id) values(2003, 10001);
