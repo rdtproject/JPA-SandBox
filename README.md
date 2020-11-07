@@ -127,3 +127,20 @@ n/a | Dirty read | Non repeatable read | Phantom read | Real world
 **Read committed** | Solved | Possible | Possible | This one is used in most of the projects
 **Repeatable read** | Solved | Solved | Possible | 
 **Serializable** | Solved | Solved | Solved | Very slow performance. Having e.g. thousand transactions, 999 would have to wait until this one will be committed.
+
+### JPA transaction vs Spring transaction
+- javax.transaction.Transactional. 
+-- JPA transactions. 
+- import org.springframework.transaction.annotation.Transactional.
+-- Spring transactions. 
+
+```java
+// database 1
+  // update 1
+  // update 2
+// database 2
+  // update 3
+// mq call
+```
+All these diverse operations can be handled only by Spring transaction. Single-DB operations can be handled by JPA transaction.
+In other words JPA transaction cannot be used in use case as above.
