@@ -10,14 +10,6 @@ Basic nowledge refresher
    @EnableCaching
    public class AppConfig {
 ```
-
-## Antipatterns
-- https://www.developerfusion.com/article/84945/flush-and-clear-or-mapping-antipatterns/
-- http://presentz.org/codemotion12/performance_anti_patterns_in_hibernate_patrycja_wegrzynowicz
-
-## Performance
-- https://vladmihalcea.com/books/high-performance-java-persistence/
-
 ## General reminder
 - @Transactional can be used on the repository side or e.g. on unit test method side. In each case it ensures that the whole method is executed, or rolled back (rollback works also for changes enforced to be saved to DB by calling flush()). It also keeps persistence context (implementation of EntityManager interface) active, meaning e.g. lazy initialization is working correctly.
 - @Transactional topic 2: Hibernate waits to the last possible moment before saving changes to DB (performance optimization, and easy possibility of rollback)
@@ -235,3 +227,9 @@ public void findByIdFirstLevelCache {
 
 ```
 
+## Antipatterns
+- https://www.developerfusion.com/article/84945/flush-and-clear-or-mapping-antipatterns/
+- http://presentz.org/codemotion12/performance_anti_patterns_in_hibernate_patrycja_wegrzynowicz
+
+## Performance
+- https://vladmihalcea.com/books/high-performance-java-persistence/
