@@ -15,7 +15,7 @@ Basic nowledge refresher
 - @Transactional topic 2: Hibernate waits to the last possible moment before saving changes to DB (performance optimization, and easy possibility of rollback)
 - Bi-directional transactions are designed to avoid redundancy in DB. Owning side of the relation (DB table) contains foreign key. Owned side of the relation does have to contain any foreign key, but in JPA annotation required statement: mappedBy = "passport" where passport is the attribute name from the owning entity.
 
-## Reations
+## Relations
 - @one-to-many, owning side of the relation is many because it will contain one's id. E.g. Course has Many reviews. Owning part is Review because each review row in DB will contain course_id attribute. In JPA mapped-by will be on the owned side (which does not define xxx_id column in DB), so mapped-by is on the Course entity side
 - @...-to-one => always EAGER fetching by default
 - @...-to-many -> always LAZY fetching by default
@@ -23,6 +23,27 @@ Basic nowledge refresher
 ## Cascade types
 - Entity relationships often depend on the existence of another entity — for example, the Person–Address relationship. Without the Person, the Address entity doesn't have any meaning of its own. When we delete the Person entity, our Address entity should also get deleted. Cascading is the way to achieve this. When we perform some action on the target entity, the same action will be applied to the associated entity.
 - https://www.baeldung.com/jpa-cascade-types 
+
+Owned side (on the many side is foreign key)
+```java
+@OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY)
+private List<Invoices> invoices;
+```
+
+Owning side (this table has added column with foreign keys)
+```java
+@OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY)
+@Fetch(FetchType.JOIN)
+private Customer customer;
+```
+
+Owning side
+```java
+@ManyToOne(fetch = FetchType.LAZY, optional = true)
+@Fetch(FetchType.JOIN)
+@JoinColumns({@JoinColumn(name="Customer_id"), @JoinColumn(name="Customer_domain")})
+private Customer customer;
+```
 
 ## Inheritence strategy
 ### @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
