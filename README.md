@@ -201,7 +201,7 @@ public void findByIdFirstLevelCache {
 }
 ```
 
-After removing Transactional from method level, each call to repository is done withing separate transaction.
+After removing Transactional from method level, each call to repository is done withing separate transaction. (we do not have anymore single PersistenceContext, and each call is done within independent Persistence Context)
 ```java
 public void findByIdFirstLevelCache {  
   Course course = repository.findById(1001L);
