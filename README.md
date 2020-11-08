@@ -48,8 +48,10 @@ private Customer customer;
 
 ```java
 @ManyToMany(fetch = FetchType.LAZY)
-@JoinTable(name="Invoice", joinColumns = {@JoinColumn(name="Customer_id", referenceColumnName="Id"), @JoinColumn(name="Cust_domain_id", referenceColumnName="Id")}
-inverseJoinColumns = {@JoinColumn(name="Invoice_id", referenceColumnName="Id"), @JoinColumn(name="Inv_domain_id", referenceColumnName="Id")})
+@JoinTable(name="Invoice", joinColumns = {@JoinColumn(name="Customer_id", referenceColumnName="Id"), 
+@JoinColumn(name="Cust_domain_id", referenceColumnName="Id")}
+inverseJoinColumns = {@JoinColumn(name="Invoice_id", referenceColumnName="Id"), 
+@JoinColumn(name="Inv_domain_id", referenceColumnName="Id")})
 private Set<Customer> customers;
 ```
 (There was no mapping on the other side)
