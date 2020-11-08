@@ -54,7 +54,7 @@ inverseJoinColumns = {@JoinColumn(name="Invoice_id", referenceColumnName="Id"),
 @JoinColumn(name="Inv_domain_id", referenceColumnName="Id")})
 private Set<Customer> customers;
 ```
-(There was no mapping on the other side)
+(There was no mapping on the other side. Example with complex primary key on both sides - address in linking table.)
 
 ## Inheritence strategy
 ### @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
