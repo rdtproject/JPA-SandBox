@@ -201,7 +201,7 @@ public void findByIdFirstLevelCache {
 }
 ```
 
-After removing Transactional from method level, each call to repository is done withing separate transaction. (we do not have anymore single PersistenceContext, and each call is done within independent Persistence Context)
+After removing Transactional from method level, each call to repository is done withing separate transaction (provided by repository). We do not have anymore single PersistenceContext.
 ```java
 public void findByIdFirstLevelCache {  
   Course course = repository.findById(1001L);
@@ -209,6 +209,27 @@ public void findByIdFirstLevelCache {
   Course course2 = repository.findById(1001L);
 }
 ```
+- The most efficient L1 cache can be ensured by putting Transactional on the service method level, as on the example above.
+- L1 is active by default, no configuration required.
 
 ### Second Level Cache
-- 
+- Requires configuration
+- Hibernate does not know which data is not going to change, and will be common to multiple transactions (e.g. such data can be list of domains in WPG, list of countries, currencies, and another dictionary-like values)
+- Implementation of L2 cache can be done using EhCache (it is a caching framework)
+
+#### Adding required dependencies
+```java
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+		</dependency>
+```
+#### Setting up configuration in application.properties
+
+```java
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+		</dependency>
+```
+
