@@ -1,6 +1,15 @@
 # JPA-SandBox
 Basic nowledge refresher
 
+## WTF
+```java
+   @Configuration
+   @EnableAsync
+   @EnableTransactionManagement
+   @EnableCaching
+   public class AppConfig {
+```
+
 ## Antipatterns
 - https://www.developerfusion.com/article/84945/flush-and-clear-or-mapping-antipatterns/
 - http://presentz.org/codemotion12/performance_anti_patterns_in_hibernate_patrycja_wegrzynowicz
@@ -227,6 +236,7 @@ public void findByIdFirstLevelCache {
 #### Setting up configuration in application.properties
 
 ```java
+#
 
 ```
 
