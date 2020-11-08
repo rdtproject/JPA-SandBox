@@ -1,7 +1,8 @@
 # JPA-SandBox
 Basic nowledge refresher
 
-## WTF
+## To be clarified, checked
+- Spring java configuration
 ```java
    @Configuration
    @EnableAsync
@@ -16,9 +17,6 @@ Basic nowledge refresher
 
 ## Performance
 - https://vladmihalcea.com/books/high-performance-java-persistence/
-
-## Read later
-- https://javabeat.net/jpa/
 
 ## Questions
 - detach() vs clear()
