@@ -98,6 +98,9 @@ select c, s from Course c, Student s
 ```
 
 ## Transactions
+### Read more
+- https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth
+
 ### ACID
 Properties in transaction management.
 - Atomicity. Complete all, or nothing.
