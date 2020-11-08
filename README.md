@@ -148,3 +148,32 @@ Global transaction isolation level can be set up for Hibernate, e.g.:
 ```java
 spring.jpa.properties.hibernate.connection.isolation=2
 ```
+## Caching
+UI=Web -> Service -> Data -> Database
+JPA caching is ensured in Data layer.
+PersistenceContext -> FirstLevelCache -> SecondLevelCache -> Database
+
+<table>
+    <thead>
+        <tr>
+            <th>Transaction1</th>
+            <th>Transaction2</th>
+            <th>Transaction3</th>
+            <th>Transaction4</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>PersistenceContext1</td>
+            <td>PersistenceContext2</td>
+            <td>PersistenceContext3</td>
+            <td>PersistenceContext4</td>
+        </tr>
+        <tr>
+            <td colspan=4 align=center>Second Level Cache</td>
+        </tr>
+        <tr>
+            <td colspan=4 align=center>Database</td>
+        </tr>
+    </tbody>
+</table>
