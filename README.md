@@ -219,17 +219,14 @@ public void findByIdFirstLevelCache {
 
 #### Adding required dependencies
 ```java
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-		</dependency>
+<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-ehcache</artifactId>
+</dependency>
 ```
 #### Setting up configuration in application.properties
 
 ```java
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-		</dependency>
+
 ```
 
