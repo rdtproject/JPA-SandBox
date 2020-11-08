@@ -17,7 +17,6 @@ Basic nowledge refresher
 
 ## Reations
 - @one-to-many, owning side of the relation is many because it will contain one's id. E.g. Course has Many reviews. Owning part is Review because each review row in DB will contain course_id attribute. In JPA mapped-by will be on the owned side (which does not define xxx_id column in DB), so mapped-by is on the Course entity side
-
 - @...-to-one => always EAGER fetching by default
 - @...-to-many -> always LAZY fetching by default
 
