@@ -46,6 +46,14 @@ private Customer customer;
 ```
 (Owned side was a template name, or dictionary value and id not contain owning object)
 
+```java
+@ManyToMany(fetch = FetchType.LAZY)
+@JoinTable(name="Invoice", joinColumns = {@JoinColumn(name="Customer_id", referenceColumnName="Id"), @JoinColumn(name="Cust_domain_id", referenceColumnName="Id")}
+inverseJoinColumns = {@JoinColumn(name="Invoice_id", referenceColumnName="Id"), @JoinColumn(name="Inv_domain_id", referenceColumnName="Id")})
+private Set<Customer> customers;
+```
+(There was no mapping on the other side)
+
 ## Inheritence strategy
 ### @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 - Default one, adding additional descriptor column do DB (just a string). Efficient as only one DB table, but creates mess with data integrity in DB: nullable columns as not each Object sub type in hierachy implements the same attributes. In other words no joins required (performance) but nullable columns (data integrity issue)
