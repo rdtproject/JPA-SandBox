@@ -44,6 +44,7 @@ Owning side
 @JoinColumns({@JoinColumn(name="Customer_id"), @JoinColumn(name="Customer_domain")})
 private Customer customer;
 ```
+(Owned side was a template name, or dictionary value and id not contain owning object)
 
 ## Inheritence strategy
 ### @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
