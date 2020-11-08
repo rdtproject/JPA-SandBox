@@ -150,7 +150,7 @@ spring.jpa.properties.hibernate.connection.isolation=2
 ```
 ## Caching
 UI=Web -> Service -> Data -> Database
-JPA caching is ensured in Data layer.
+JPA caching is ensured in Data layer.  
 PersistenceContext -> FirstLevelCache -> SecondLevelCache -> Database
 
 <table>
@@ -160,20 +160,31 @@ PersistenceContext -> FirstLevelCache -> SecondLevelCache -> Database
             <th>Transaction2</th>
             <th>Transaction3</th>
             <th>Transaction4</th>
+            <th>Transactions going on in parallel.</th>
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td>First Level Cache</td>
+            <td>First Level Cache</td>
+            <td>First Level Cache</td>
+            <td>First Level Cache</td>
+            <td>E.g. Transaction 1 is reading list of Courses from DB 3 times. Only the first time it will retrieve data from DB. Each next time it will return the result from L1 cache. L1 cache is bounded to single transaction.</td>          
+        </tr>
         <tr>
             <td>PersistenceContext1</td>
             <td>PersistenceContext2</td>
             <td>PersistenceContext3</td>
             <td>PersistenceContext4</td>
+            <td>Each transaction has PC on its own - all entities modified within this transaction are tracked.</td>          
         </tr>
         <tr>
             <td colspan=4 align=center>Second Level Cache</td>
+            <td></td>
         </tr>
         <tr>
             <td colspan=4 align=center>Database</td>
+            <td></td>
         </tr>
     </tbody>
 </table>
