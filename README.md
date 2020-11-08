@@ -189,3 +189,26 @@ PersistenceContext -> FirstLevelCache -> SecondLevelCache -> Database
         </tr>
     </tbody>
 </table>
+
+### First Level Cache
+This code will execute query to DB only once because everything is wrapped up into single Transaction (Transactional on the method level) and we are quering the same data.
+```java
+@Transactional
+public void findByIdFirstLevelCache {  
+  Course course = repository.findById(1001L);
+  Course course1 = repository.findById(1001L);
+  Course course2 = repository.findById(1001L);
+}
+```
+
+After removing Transactional from method level, each call to repository is done withing separate transaction.
+```java
+public void findByIdFirstLevelCache {  
+  Course course = repository.findById(1001L);
+  Course course1 = repository.findById(1001L);
+  Course course2 = repository.findById(1001L);
+}
+```
+
+### Second Level Cache
+- 
