@@ -153,6 +153,7 @@ UI=Web -> Service -> Data -> Database
 JPA caching is ensured in Data layer.  
 PersistenceContext -> FirstLevelCache -> SecondLevelCache -> Database
 
+### First Level Cache vs Second Level Cache
 <table>
     <thead>
         <tr>
