@@ -98,9 +98,6 @@ select c, s from Course c, Student s
 ```
 
 ## Transactions
-### Read more
-- https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth
-
 ### ACID
 Properties in transaction management.
 - Atomicity. Complete all, or nothing.
@@ -143,11 +140,13 @@ Diverse operations as below can be handled by single Spring transaction. It cann
   // update 3
 // mq call
 ```
-
 Global transaction isolation level can be set up for Hibernate, e.g.:
 ```java
 spring.jpa.properties.hibernate.connection.isolation=2
 ```
+### Read more
+- https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth
+
 ## Caching
 UI=Web -> Service -> Data -> Database
 JPA caching is ensured in Data layer.  
