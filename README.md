@@ -160,7 +160,7 @@ PersistenceContext -> FirstLevelCache -> SecondLevelCache -> Database
             <th>Transaction2</th>
             <th>Transaction3</th>
             <th>Transaction4</th>
-            <th>Transactions going on in parallel.</th>
+            <th>All these Transactions are going on in parallel</th>
         </tr>
     </thead>
     <tbody>
@@ -176,15 +176,15 @@ PersistenceContext -> FirstLevelCache -> SecondLevelCache -> Database
             <td>First Level Cache</td>
             <td>First Level Cache</td>
             <td>First Level Cache</td>
-            <td>E.g. Transaction 1 is reading list of Courses from DB 3 times. Only the first time it will retrieve data from DB. Each next time it will return the result from L1 cache. L1 cache is bounded to single transaction.</td>          
+            <td>E.g. Transaction 1 is reading list of Courses from DB 3 times. Only the first time it will retrieve data from DB. Each next time it will return the result from L1 cache. L1 cache is within the boundary of the single transaction.</td>          
         </tr>      
         <tr>
             <td colspan=4 align=center>Second Level Cache</td>
-            <td></td>
+            <td>Comes across multiple transactions. E.g. many users are using app. All are getting a static list of countries. List of countries is always the same, so can be safely stored in L2 cache. First transaction which will reach DB, will query data, and since now any other transaction will just retrieve this information from Cache.</td>
         </tr>
         <tr>
             <td colspan=4 align=center>Database</td>
-            <td></td>
+            <td>Access to DB is always slow.</td>
         </tr>
     </tbody>
 </table>
