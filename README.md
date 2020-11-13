@@ -351,7 +351,7 @@ public void findByIdFirstLevelCache {
 </dependency>
 ```
 #### Setting up configuration in application.properties
-
+- in application properties
 ```properties
 #Enable EhCache
 spring.jpa.properties.hibernate.cache.use_second_level_cache=true
@@ -361,6 +361,29 @@ spring.jpa.properties.hibernate.cache.region.factory_class=org.hibernate.cache.e
 
 #Only cache what I tell to cache
 spring.jpa.properties.javax.persistence.sharedCache.mode=ENABLE_SELECTIVE
+```
+- To enable caching only what I tell to cache (data which is safe to cache / does not change often)
+```java
+<dependency>
+	@Cacheable
+	public class Course {
+</dependency>
+- puts: 
+- hits: 
+- misses: 
+```properties
+2020-11-13 21:40:38.120  INFO 20104 --- [           main] i.StatisticalLoggingSessionEventListener : Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
 ```
 
 ## Antipatterns
