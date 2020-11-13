@@ -21,11 +21,8 @@ Basic nowledge refresher
    	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
    })
    public class Invoice extends XyzEntity {   	
+   	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
    }
-```
-
-```java   
-   public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
 ```
 
 ## NamedEntityGraph
