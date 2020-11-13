@@ -15,6 +15,76 @@ Basic nowledge refresher
 - @Transactional topic 2: Hibernate waits to the last possible moment before saving changes to DB (performance optimization, and easy possibility of rollback)
 - Bi-directional transactions are designed to avoid redundancy in DB. Owning side of the relation (DB table) contains foreign key. Owned side of the relation does have to contain any foreign key, but in JPA annotation required statement: mappedBy = "passport" where passport is the attribute name from the owning entity.
 
+## NamedQueries
+```java   
+   @NamedQueries({
+   	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
+   })
+   public class Invoice extends XyzEntity {   	
+   	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
+   }
+```
+
+## NamedNativeQueries
+- Abstract examples, more advanced implementation to be analyzed further
+```java   
+   @SqlResultMapping({
+   	@SqlResultSetMapping(name = INVOICES_MAPPING, columns = @ColumnResult(name = amount, type = BigInteger.class)),
+	@SqlResultSetMapping(name = INVOICES_MAPPING_2, columns = @ColumnResult(name = name, type = String.class)),
+	@SqlResultSetMapping(name = INVOICES_MAPPING_3, 
+	classes = {@ConstructorResult(targetClass = Invoice.class, columns = {
+		@ColumnResult(name = 'id', type = BigInteger.class),
+		@ColumnResult(name = 'date', type = Date.class),
+		@ColumnResult(name = 'name', type = String.class)
+	})})
+   })
+   @NamedNativeQueries({
+   	@NamedNativeQuery(name = NQ_GET_ALL_INVOICES, query = "select * from Invoice", resultSetMapping = INVOICES_MAPPING)
+	@NamedNativeQuery(name = NQ_GET_ALL_CLOSED_INVOICES, query = "select * from Invoice i where i.status = 'CLOSED'", resultSetMapping = INVOICES_MAPPING)
+   })
+   public class Invoice extends XyzEntity {   	
+   	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
+	public static final String NQ_GET_ALL_CLOSED_INVOICES = "Invoice.getAllClosedInvoices";
+	public static final String INVOICES_MAPPING = "invoicesInExecutionMapping";
+   }
+```
+
+## NamedEntityGraph
+- how is it used for FetchType.LAZY
+```java   
+   @NamedQueries({
+   	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
+   })
+   @NamedEntityGraph(
+   	name = EG_INVOICE_WITH_DETAILS,
+	attributeNodes = {
+		@NamedAttributeNode(creator)
+		@NamedAttributeNode(contact)
+		@NamedAttributeNode(amount)
+		@NamedAttributeNode(processor)
+	}
+   )
+   public class Invoice extends XyzEntity {   	
+   	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
+	public static final String EG_INVOICE_WITH_DETAILS = "InvoiceWithCreator";
+   }
+```
+## Mapping numbers
+- A BigDecimal is an exact way of representing numbers. A Double has a certain precision. Working with doubles of various magnitudes (say d1=1000.0 and d2=0.001) could result in the 0.001 being dropped alltogether when summing as the difference in magnitude is so large. With BigDecimal this would not happen.
+The disadvantage of BigDecimal is that it's slower, and it's a bit more difficult to program algorithms that way (due to + - * and / not being overloaded).
+If you are dealing with money, or precision is a must, use BigDecimal. Otherwise Doubles tend to be good enough.
+- http://jlaskowski.blogspot.com/2007/04/rozpoznanie-dziaania-adnotacji-column-i.html
+```java   
+@Column(name = "INVOICE_AMOUNT")
+private BigDecimal amount;
+
+@Column(precision=8, scale=2) 
+private double overallRate;
+
+@Column(precision=8, scale=2) 
+private float hourlyRate;
+```
+
 ## Relations
 - @one-to-many, owning side of the relation is many because it will contain one's id. E.g. Course has Many reviews. Owning part is Review because each review row in DB will contain course_id attribute. In JPA mapped-by will be on the owned side (which does not define xxx_id column in DB), so mapped-by is on the Course entity side
 - @...-to-one => always EAGER fetching by default
@@ -160,8 +230,10 @@ n/a | Dirty read | Non repeatable read | Phantom read | Real world
 ### JPA transaction vs Spring transaction
 Transaction engine | Transaction type | Specifics
 -- | ---------- | --------
-javax.transaction.Transactional | JPA | Can handle singe DB communication.
-org.springframework.transaction.annotation.Transactional | Spring | Can handle in single transaction different DBs, MQs. Allows to set transaction isolation level.
+javax.transaction.Transactional | JPA | Can handle singe DB communication. Can be used in apps using Spring.
+org.springframework.transaction.annotation.Transactional | Spring | Can handle in single transaction different DBs, MQs. Allows to set transaction isolation level. Cannot be used in apps which do not use Spring framework.
+
+https://www.baeldung.com/spring-vs-jta-transactional, and so on.
 
 Diverse operations as below can be handled by single Spring transaction. It cannot be handled by JPA transaction.
 ```java
@@ -178,6 +250,28 @@ spring.jpa.properties.hibernate.connection.isolation=2
 ```
 ### Read more
 - https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth
+
+## Spring Transactional
+- to be checked readonly
+```java
+@Transactional(readonly = true)
+public void distributeTransientAttributes() {
+	// business logic
+}
+```
+- to be checked rollbacks
+```java
+@Transactional(rollbackFor = EntityNotFoundException.class, AnotherException.class, IncorrectParameters.class)
+public void distributeTransientAttributes() {
+	// business logic
+}
+```
+```java
+@Transactional(noRollbackFor = EntityNotFoundException.class)
+public void distributeTransientAttributes() {
+	// business logic
+}
+```
 
 ## Caching
 UI=Web -> Service -> Data -> Database
@@ -247,6 +341,7 @@ public void findByIdFirstLevelCache {
 - Requires configuration
 - Hibernate does not know which data is not going to change, and will be common to multiple transactions (e.g. such data can be list of domains in WPG, list of countries, currencies, and another dictionary-like values)
 - Implementation of L2 cache can be done using EhCache (it is a caching framework)
+- Example how to enable L2 cache: https://www.baeldung.com/hibernate-second-level-cache
 
 #### Adding required dependencies
 ```java
@@ -256,10 +351,53 @@ public void findByIdFirstLevelCache {
 </dependency>
 ```
 #### Setting up configuration in application.properties
+```properties
+#Enable EhCache
+spring.jpa.properties.hibernate.cache.use_second_level_cache=true
 
+#Specify caching framework
+spring.jpa.properties.hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
+
+#Only cache what I tell to cache
+spring.jpa.properties.javax.persistence.sharedCache.mode=ENABLE_SELECTIVE
+```
+- Value ENABLE_SELECTIVE comes from:
 ```java
-#
+package javax.persistence;
 
+public enum SharedCacheMode {
+    ALL,
+    NONE,
+    ENABLE_SELECTIVE,
+    DISABLE_SELECTIVE,
+    UNSPECIFIED;
+}
+```
+
+#### To enable caching only what I tell to cache 
+- Only data which is safe to cache between transactions / does not change often.
+```java
+@Cacheable
+public class Course {
+```
+#### How to read L2 cache logs
+L2C stands for Lever 2 Cache
+- L2C puts: Entity with selected id was put in cache. Next time any transaction will try to read it, query to db will no longer be needed.
+- L2C hits: When I am looking at the cache for entity with selected nr, and I get the data (query to DB was not needed).
+- L2C misses: Entity with selected id was not cached. Query to DB was required.
+```properties
+2020-11-13 21:40:38.120  INFO 20104 --- [           main] i.StatisticalLoggingSessionEventListener : Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
 ```
 
 ## Antipatterns
