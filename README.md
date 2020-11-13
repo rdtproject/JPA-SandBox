@@ -400,6 +400,38 @@ L2C stands for Lever 2 Cache
     0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
 }
 ```
+```json
+{
+  "name" : "JPA in 50 steps",
+  "reviews" : [ {
+    "rating" : "5",
+    "description" : "Great course",
+    "_links" : {
+      "course" : {
+        "href" : "http://localhost:8080/courses/10001"
+      }
+    }
+  }, {
+    "rating" : "4",
+    "description" : "Average",
+    "_links" : {
+      "course" : {
+        "href" : "http://localhost:8080/courses/10001"
+      }
+    }
+  } ],
+  "lastUpdateDate" : "2020-11-13T00:00:00",
+  "creationDate" : "2020-11-13T00:00:00",
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/courses/10001"
+    },
+    "course" : {
+      "href" : "http://localhost:8080/courses/10001"
+    }
+  }
+}
+```
 
 ## Antipatterns
 - https://www.developerfusion.com/article/84945/flush-and-clear-or-mapping-antipatterns/
