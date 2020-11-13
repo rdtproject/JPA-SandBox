@@ -353,8 +353,14 @@ public void findByIdFirstLevelCache {
 #### Setting up configuration in application.properties
 
 ```java
-#
+#Enable EhCache
+spring.jpa.properties.hibernate.cache.use_second_level_cache=true
 
+#Specify caching framework
+spring.jpa.properties.hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
+
+#Only cache what I tell to cache
+spring.jpa.properties.javax.persistence.sharedCache.mode=ENABLE_SELECTIVE
 ```
 
 ## Antipatterns
