@@ -14,6 +14,7 @@ import static com.tpolm.jpasandpit.entity.EntityConstans.GET_ALL_COURSES;
 @NamedQueries(
         @NamedQuery(name = GET_ALL_COURSES, query = "select c from Course c")
 )
+@Cacheable
 public class Course {
 
     @Id
