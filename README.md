@@ -400,8 +400,8 @@ L2C stands for Lever 2 Cache
     0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
 }
 ```
-1 L2C hits because Course with id 10001 was already cached. Each new transaction will just get this course from Cache. 
-Reviews are not cached (as can change more often), do each time respective DB query will be executed.
+- 1 L2C hits because Course with id 10001 was already cached. Each new transaction will just get this course from Cache. 
+- Reviews are not cached (as can change more often), do each time respective DB query will be executed.
 ```json
 {
   "name" : "JPA in 50 steps",
