@@ -341,6 +341,7 @@ public void findByIdFirstLevelCache {
 - Requires configuration
 - Hibernate does not know which data is not going to change, and will be common to multiple transactions (e.g. such data can be list of domains in WPG, list of countries, currencies, and another dictionary-like values)
 - Implementation of L2 cache can be done using EhCache (it is a caching framework)
+- Example how to enable L2 cache: https://www.baeldung.com/hibernate-second-level-cache
 
 #### Adding required dependencies
 ```java
