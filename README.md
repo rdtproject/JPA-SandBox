@@ -381,9 +381,10 @@ public enum SharedCacheMode {
 public class Course {
 ```
 #### How to read L2 cache logs
-- puts: 
-- hits: 
-- misses: 
+L2C stands for Lever 2 Cache
+- L2C puts: Entity with selected id was put in cache. Next time any transaction will try to read it, query to db will no longer be needed.
+- L2C hits: When I am looking at the cache for entity with selected nr, and I get the data (query to DB was not needed).
+- L2C misses: Entity with selected id was not cached. Query to DB was required.
 ```properties
 2020-11-13 21:40:38.120  INFO 20104 --- [           main] i.StatisticalLoggingSessionEventListener : Session Metrics {
     0 nanoseconds spent acquiring 0 JDBC connections;
