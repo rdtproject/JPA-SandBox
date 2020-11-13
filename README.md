@@ -25,6 +25,16 @@ Basic nowledge refresher
    }
 ```
 
+## NamedNativeQueries
+```java   
+   @NamedNativeQueries({
+   	@NamedNativeQuery(name = NQ_GET_ALL_INVOICES, query = "select * from Invoice")
+   })
+   public class Invoice extends XyzEntity {   	
+   	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
+   }
+```
+
 ## NamedEntityGraph
 - how is it used for FetchType.LAZY
 ```java   
