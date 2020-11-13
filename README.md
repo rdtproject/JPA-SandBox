@@ -351,7 +351,6 @@ public void findByIdFirstLevelCache {
 </dependency>
 ```
 #### Setting up configuration in application.properties
-- in application properties
 ```properties
 #Enable EhCache
 spring.jpa.properties.hibernate.cache.use_second_level_cache=true
@@ -362,7 +361,7 @@ spring.jpa.properties.hibernate.cache.region.factory_class=org.hibernate.cache.e
 #Only cache what I tell to cache
 spring.jpa.properties.javax.persistence.sharedCache.mode=ENABLE_SELECTIVE
 ```
-- Values come from:
+- Value ENABLE_SELECTIVE comes from:
 ```java
 package javax.persistence;
 
@@ -375,7 +374,8 @@ public enum SharedCacheMode {
 }
 ```
 
-- To enable caching only what I tell to cache (data which is safe to cache / does not change often)
+### To enable caching only what I tell to cache 
+- Only data which is safe to cache between transactions / does not change often.
 ```java
 <dependency>
 	@Cacheable
