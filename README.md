@@ -15,6 +15,38 @@ Basic nowledge refresher
 - @Transactional topic 2: Hibernate waits to the last possible moment before saving changes to DB (performance optimization, and easy possibility of rollback)
 - Bi-directional transactions are designed to avoid redundancy in DB. Owning side of the relation (DB table) contains foreign key. Owned side of the relation does have to contain any foreign key, but in JPA annotation required statement: mappedBy = "passport" where passport is the attribute name from the owning entity.
 
+## NamedQueries
+```java   
+   @NamedQueries({
+   	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
+   })
+   public class Invoice extends XyzEntity {   	
+   }
+```
+
+```java   
+   public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
+```
+
+## NamedEntityGraph
+- how is it used for FetchType.LAZY
+```java   
+   @NamedQueries({
+   	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
+   })
+   @NamedEntityGraph(
+   	name = Invoice.EG_INVOICE_WITH_DETAILS,
+	attributeNodes = {
+		@NamedAttributeNode(creator)
+		@NamedAttributeNode(contact)
+		@NamedAttributeNode(amount)
+		@NamedAttributeNode(processor)
+	}
+   )
+   public class Invoice extends XyzEntity {   	
+   }
+```
+
 ## Relations
 - @one-to-many, owning side of the relation is many because it will contain one's id. E.g. Course has Many reviews. Owning part is Review because each review row in DB will contain course_id attribute. In JPA mapped-by will be on the owned side (which does not define xxx_id column in DB), so mapped-by is on the Course entity side
 - @...-to-one => always EAGER fetching by default
