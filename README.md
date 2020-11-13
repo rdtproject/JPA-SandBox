@@ -32,7 +32,7 @@ Basic nowledge refresher
    	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
    })
    @NamedEntityGraph(
-   	name = Invoice.EG_INVOICE_WITH_DETAILS,
+   	name = EG_INVOICE_WITH_DETAILS,
 	attributeNodes = {
 		@NamedAttributeNode(creator)
 		@NamedAttributeNode(contact)
@@ -41,6 +41,8 @@ Basic nowledge refresher
 	}
    )
    public class Invoice extends XyzEntity {   	
+   	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
+	public static final String EG_INVOICE_WITH_DETAILS = "InvoiceWithCreator";
    }
 ```
 
