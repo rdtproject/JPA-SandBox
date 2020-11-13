@@ -237,6 +237,28 @@ spring.jpa.properties.hibernate.connection.isolation=2
 ### Read more
 - https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth
 
+## Spring Transactional
+- to be checked readonly
+```java
+@Transactional(readonly = true)
+public void distributeTransientAttributes() {
+	// business logic
+}
+```
+- to be checked rollbacks
+```java
+@Transactional(rollbackFor = EntityNotFoundException.class, AnotherException.class, IncorrectParameters.class)
+public void distributeTransientAttributes() {
+	// business logic
+}
+```
+```java
+@Transactional(noRollbackFor = EntityNotFoundException.class)
+public void distributeTransientAttributes() {
+	// business logic
+}
+```
+
 ## Caching
 UI=Web -> Service -> Data -> Database
 JPA caching is ensured in Data layer.  
