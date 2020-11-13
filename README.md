@@ -55,6 +55,14 @@ Basic nowledge refresher
 	public static final String EG_INVOICE_WITH_DETAILS = "InvoiceWithCreator";
    }
 ```
+## Mapping numbers
+- A BigDecimal is an exact way of representing numbers. A Double has a certain precision. Working with doubles of various magnitudes (say d1=1000.0 and d2=0.001) could result in the 0.001 being dropped alltogether when summing as the difference in magnitude is so large. With BigDecimal this would not happen.
+The disadvantage of BigDecimal is that it's slower, and it's a bit more difficult to program algorithms that way (due to + - * and / not being overloaded).
+If you are dealing with money, or precision is a must, use BigDecimal. Otherwise Doubles tend to be good enough.
+```java   
+@Column(name = "INVOICE_AMOUNT")
+private BigDecimal amount;
+```
 
 ## Relations
 - @one-to-many, owning side of the relation is many because it will contain one's id. E.g. Course has Many reviews. Owning part is Review because each review row in DB will contain course_id attribute. In JPA mapped-by will be on the owned side (which does not define xxx_id column in DB), so mapped-by is on the Course entity side
