@@ -352,7 +352,7 @@ public void findByIdFirstLevelCache {
 ```
 #### Setting up configuration in application.properties
 
-```java
+```properties
 #Enable EhCache
 spring.jpa.properties.hibernate.cache.use_second_level_cache=true
 
