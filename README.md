@@ -26,12 +26,26 @@ Basic nowledge refresher
 ```
 
 ## NamedNativeQueries
+- Abstract examples, more advanced implementation to be analyzed further
 ```java   
+   @SqlResultMapping({
+   	@SqlResultSetMapping(name = INVOICES_MAPPING, columns = @ColumnResult(name = amount, type = BigInteger.class)),
+	@SqlResultSetMapping(name = INVOICES_MAPPING_2, columns = @ColumnResult(name = name, type = String.class)),
+	@SqlResultSetMapping(name = INVOICES_MAPPING_3, 
+	classes = {@ConstructorResult(targetClass = Invoice.class, columns = {
+		@ColumnResult(name = 'id', type = BigInteger.class),
+		@ColumnResult(name = 'date', type = Date.class),
+		@ColumnResult(name = 'name', type = String.class)
+	})})
+   })
    @NamedNativeQueries({
-   	@NamedNativeQuery(name = NQ_GET_ALL_INVOICES, query = "select * from Invoice")
+   	@NamedNativeQuery(name = NQ_GET_ALL_INVOICES, query = "select * from Invoice", resultSetMapping = INVOICES_MAPPING)
+	@NamedNativeQuery(name = NQ_GET_ALL_CLOSED_INVOICES, query = "select * from Invoice i where i.status = 'CLOSED'", resultSetMapping = INVOICES_MAPPING)
    })
    public class Invoice extends XyzEntity {   	
    	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
+	public static final String NQ_GET_ALL_CLOSED_INVOICES = "Invoice.getAllClosedInvoices";
+	public static final String INVOICES_MAPPING = "invoicesInExecutionMapping";
    }
 ```
 
