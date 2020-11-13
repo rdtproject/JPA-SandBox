@@ -388,18 +388,20 @@ L2C stands for Lever 2 Cache
 - Test with e.g. http://localhost:8080/courses/10001 having enabled Spring Data Rest
 ```properties
 2020-11-13 21:40:38.120  INFO 20104 --- [           main] i.StatisticalLoggingSessionEventListener : Session Metrics {
-    0 nanoseconds spent acquiring 0 JDBC connections;
+    29800 nanoseconds spent acquiring 1 JDBC connections;
     0 nanoseconds spent releasing 0 JDBC connections;
-    0 nanoseconds spent preparing 0 JDBC statements;
-    0 nanoseconds spent executing 0 JDBC statements;
+    22100 nanoseconds spent preparing 1 JDBC statements;
+    79800 nanoseconds spent executing 1 JDBC statements;
     0 nanoseconds spent executing 0 JDBC batches;
     0 nanoseconds spent performing 0 L2C puts;
-    0 nanoseconds spent performing 0 L2C hits;
+    32300 nanoseconds spent performing 1 L2C hits;
     0 nanoseconds spent performing 0 L2C misses;
     0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
     0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
 }
 ```
+1 L2C hits because Course with id 10001 was already cached. Each new transaction will just get this course from Cache. 
+Reviews are not cached (as can change more often), do each time respective DB query will be executed.
 ```json
 {
   "name" : "JPA in 50 steps",
