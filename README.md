@@ -59,9 +59,16 @@ Basic nowledge refresher
 - A BigDecimal is an exact way of representing numbers. A Double has a certain precision. Working with doubles of various magnitudes (say d1=1000.0 and d2=0.001) could result in the 0.001 being dropped alltogether when summing as the difference in magnitude is so large. With BigDecimal this would not happen.
 The disadvantage of BigDecimal is that it's slower, and it's a bit more difficult to program algorithms that way (due to + - * and / not being overloaded).
 If you are dealing with money, or precision is a must, use BigDecimal. Otherwise Doubles tend to be good enough.
+- http://jlaskowski.blogspot.com/2007/04/rozpoznanie-dziaania-adnotacji-column-i.html
 ```java   
 @Column(name = "INVOICE_AMOUNT")
 private BigDecimal amount;
+
+@Column(precision=8, scale=2) 
+private double overallRate;
+
+@Column(precision=8, scale=2) 
+private float hourlyRate;
 ```
 
 ## Relations
