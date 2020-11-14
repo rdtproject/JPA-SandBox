@@ -15,18 +15,6 @@ Basic nowledge refresher
 - @Transactional topic 2: Hibernate waits to the last possible moment before saving changes to DB (performance optimization, and easy possibility of rollback)
 - Bi-directional transactions are designed to avoid redundancy in DB. Owning side of the relation (DB table) contains foreign key. Owned side of the relation does have to contain any foreign key, but in JPA annotation required statement: mappedBy = "passport" where passport is the attribute name from the owning entity.
 
-## Enable H2 Console
-http://localhost:8080/h2-console  
-In application.properties:
-
-```properties
-spring.datasource.url=jdbc:h2:mem:testdb
-spring.data.jpa.repositories.bootstrap-mode=default
-
-#Enabling H2 console
-spring.h2.console.enabled=true
-```
-
 ## NamedQueries
 ```java   
    @NamedQueries({
@@ -477,4 +465,33 @@ In Course entity add annotation @JsonIgnore to avoid infinity loops (Course has 
 @ManyToMany(mappedBy = "courses")
 @JsonIgnore
 private List<Student> students = new ArrayList<>();
+```
+
+## Enable H2 Console
+http://localhost:8080/h2-console  
+In application.properties:
+
+```properties
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.data.jpa.repositories.bootstrap-mode=default
+
+#Enabling H2 console
+spring.h2.console.enabled=true
+```
+
+## Enable logging
+Enable SQL logging including query parameters
+```properties
+#Turn statistics on
+spring.jpa.properties.hibernate.generate_statistics=true
+logging.level.org.hibernate.stat=debug
+
+#Show all queries
+spring.jpa.show-sql=true
+
+#Show parameters
+logging.level.org.hibernate.type=trace
+
+#Format queries - do not enable on Production!
+spring.jpa.properties.hibernate.format_sql=true
 ```
