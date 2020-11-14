@@ -16,7 +16,7 @@ Basic nowledge refresher
 - Bi-directional transactions are designed to avoid redundancy in DB. Owning side of the relation (DB table) contains foreign key. Owned side of the relation does have to contain any foreign key, but in JPA annotation required statement: mappedBy = "passport" where passport is the attribute name from the owning entity.
 
 ## Enable H2 Console
-http://localhost:8080/h2-console
+http://localhost:8080/h2-console  
 In application.properties:
 
 ```properties
