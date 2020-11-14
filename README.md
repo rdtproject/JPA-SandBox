@@ -444,8 +444,9 @@ This is Hibernate feature, not JPA feature. Can be used for cases, when all remo
 @SQLDelete(sql = "update Course set is_deleted=true where id=?")
 @Where(clause = "is_deleted = false")
 public class Course {
-private boolean isDeleted;
-// .....
+	// .....
+	private boolean isDeleted;
+	// .....
 }
 ```
 
