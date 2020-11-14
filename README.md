@@ -252,6 +252,7 @@ spring.jpa.properties.hibernate.connection.isolation=2
 - https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth
 
 ## Spring Transactional
+In latest project only Spring Transactional was used. JPA Transactional wasn't used at all.
 - to be checked readonly
 ```java
 @Transactional(readonly = true)
