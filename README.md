@@ -377,7 +377,7 @@ public enum SharedCacheMode {
 #### To enable caching only what I tell to cache 
 - Only data which is safe to cache between transactions / does not change often.
 ```java
-@Cacheable
+@Cacheable //javax.persistence.Cacheable
 public class Course {
 ```
 #### How to read L2 cache logs
