@@ -17,6 +17,7 @@ Basic nowledge refresher
 
 ## Enable H2 Console
 http://localhost:8080/h2-console
+In application.properties:
 
 ```properties
 spring.datasource.url=jdbc:h2:mem:testdb
