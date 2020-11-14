@@ -435,6 +435,10 @@ L2C stands for Lever 2 Cache
   }
 }
 ```
+## Soft deletes
+```java
+private boolean isDeleted;
+```
 
 ## Antipatterns
 - https://www.developerfusion.com/article/84945/flush-and-clear-or-mapping-antipatterns/
@@ -442,3 +446,23 @@ L2C stands for Lever 2 Cache
 
 ## Performance
 - https://vladmihalcea.com/books/high-performance-java-persistence/
+
+## SpringDataRest
+Add dependency:
+```xml
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-rest</artifactId>
+</dependency>
+```
+Add annotation @RepositoryRestResource and initial path for RESTful services:
+```java
+@RepositoryRestResource(path = "courses")
+public interface CourseSpringDataRepository extends JpaRepository<Course, Long> {
+```
+In Course entity add annotation @JsonIgnore to avoid infinity loops (Course has Students, but each student can have course, which can have student, which can have...)
+```java
+@ManyToMany(mappedBy = "courses")
+@JsonIgnore
+private List<Student> students = new ArrayList<>();
+```
