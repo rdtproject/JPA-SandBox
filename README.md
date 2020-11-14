@@ -436,8 +436,17 @@ L2C stands for Lever 2 Cache
 }
 ```
 ## Soft deletes
+This is Hibernate feature, not JPA feature. Can be used for cases, when all removed data should not be physically removed from DB, but rather marked as "removed".
+- Add isDeleted attribute (respective default column in DB will be is_deleted). Setters, getters not required.
+- Add @SQLDelete annotation and specify JPQL which will be always appended to any "where" query.
+- Add @@Where annotation and specify JPQL to be executed for any query
 ```java
+@SQLDelete(sql = "update Course set is_deleted=true where id=?")
+@Where(clause = "is_deleted = false")
+public class Course {
 private boolean isDeleted;
+// .....
+}
 ```
 
 ## Antipatterns
