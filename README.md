@@ -487,7 +487,18 @@ create table student (
         primary key (id)
 )
 ```
-
+## Using Enums
+Enums which should be stored in DB has to be annotated as below.
+Default: Ordinal, can be updated to String.
+```java
+@Enumerated(EnumType.STRING)
+private ReviewRating reviewRating;
+```
+```java
+public enum ReviewRating {
+    ONE, TWO, THREE, FOUR, FIVE;
+}
+```
 ## Antipatterns
 - https://www.developerfusion.com/article/84945/flush-and-clear-or-mapping-antipatterns/
 - http://presentz.org/codemotion12/performance_anti_patterns_in_hibernate_patrycja_wegrzynowicz
