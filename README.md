@@ -463,6 +463,14 @@ Solution to the concerns with native queries can be to use lifecycle methods
 ## Embedded, Embeddable
 - Where entity does not have to be in any relation, but should become a part of main Entity DB.
 - Embedded entity can be still used in another places
+
+Class which can be embedded
+```java
+@Embeddable
+public class Address {
+}
+```
+Embedded attribute in Student entity.
 ```java
 @Embedded
 private Address address;
