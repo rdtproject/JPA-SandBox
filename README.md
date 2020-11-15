@@ -460,6 +460,26 @@ Solution to the concerns with native queries can be to use lifecycle methods
 	}
 ```
 
+## Embedded, Embeddable
+- Where entity does not have to be in any relation, but should become a part of main Entity DB.
+- Embedded entity can be still used in another places
+```java
+@Embedded
+private Address address;
+```
+Table student now contains more columns.
+```java
+create table student (
+       id bigint not null,
+        city varchar(255),
+        line1 varchar(255),
+        line2 varchar(255),
+        name varchar(255) not null,
+        passport_id bigint,
+        primary key (id)
+)
+```
+
 ## Antipatterns
 - https://www.developerfusion.com/article/84945/flush-and-clear-or-mapping-antipatterns/
 - http://presentz.org/codemotion12/performance_anti_patterns_in_hibernate_patrycja_wegrzynowicz
