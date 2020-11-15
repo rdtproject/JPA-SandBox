@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.transaction.Transactional;
 
 @SpringBootApplication
-public class JpaSandpitApplication implements CommandLineRunner {
+public class JpaSandpitApplication {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -26,9 +26,4 @@ public class JpaSandpitApplication implements CommandLineRunner {
 		SpringApplication.run(JpaSandpitApplication.class, args);
 	}
 
-	@Override
-	@Transactional
-	public void run(String... args) throws Exception {
-
-	}
 }

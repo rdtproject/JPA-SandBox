@@ -68,7 +68,7 @@ public class CourseRepositoryTest {
 
     @Test
     @DirtiesContext
-    @Transactional
+    //@Transactional
     public void deleteById() {
         Course course = courseRepo.findById(10002L);
         assertNotNull(course);

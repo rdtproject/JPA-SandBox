@@ -1,6 +1,6 @@
-insert into course(id, name, created, updated) values (10001, 'JPA in 50 steps', sysdate(), sysdate());
-insert into course(id, name, created, updated) values (10002, 'Dupa in 12 steps', sysdate(), sysdate());
-insert into course(id, name, created, updated) values (10003, 'Spring in 19 steps', sysdate(), sysdate());
+insert into course(id, name, created, updated, is_deleted) values (10001, 'JPA in 50 steps', sysdate(), sysdate(), false);
+insert into course(id, name, created, updated, is_deleted) values (10002, 'Dupa in 12 steps', sysdate(), sysdate(), false);
+insert into course(id, name, created, updated, is_deleted) values (10003, 'Spring in 19 steps', sysdate(), sysdate(), false);
 
 insert into passport(id, number) values (4001, 'E123654');
 insert into passport(id, number) values (4002, 'J764293');

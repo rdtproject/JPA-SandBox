@@ -1,7 +1,10 @@
 package com.tpolm.jpasandpit.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +18,8 @@ import static com.tpolm.jpasandpit.entity.EntityConstans.GET_ALL_COURSES;
         @NamedQuery(name = GET_ALL_COURSES, query = "select c from Course c")
 )
 @Cacheable
+@SQLDelete(sql = "update Course set is_deleted=true where id=?")
+@Where(clause = "is_deleted = false")
 public class Course {
 
     @Id
@@ -28,6 +33,7 @@ public class Course {
     private List<Review> reviews = new ArrayList<>();
 
     @ManyToMany(mappedBy = "courses")
+    @JsonIgnore
     private List<Student> students = new ArrayList<>();
 
     @UpdateTimestamp
@@ -38,6 +44,12 @@ public class Course {
     @Column(name = "created")
     private LocalDateTime creationDate;
 
+    private boolean isDeleted;
+
+    @PreRemove
+    private void preRemove() {
+         this.isDeleted = true;
+    }
 
     public Course() {
     }
