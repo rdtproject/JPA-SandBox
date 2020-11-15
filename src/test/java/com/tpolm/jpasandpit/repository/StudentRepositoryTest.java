@@ -1,6 +1,7 @@
 package com.tpolm.jpasandpit.repository;
 
 import com.tpolm.jpasandpit.JpaSandpitApplication;
+import com.tpolm.jpasandpit.entity.Address;
 import com.tpolm.jpasandpit.entity.Course;
 import com.tpolm.jpasandpit.entity.Passport;
 import com.tpolm.jpasandpit.entity.Student;
@@ -76,4 +77,13 @@ public class StudentRepositoryTest {
         assertTrue(student.getCourses().size() == 1);
     }
 
+    @Test
+    @Transactional
+    public void setAddressDetails() {
+        Student student = em.find(Student.class, 2001L);
+        student.setAddress(new Address("Badennerstrasse", "18k", "Geneva"));
+        em.flush();
+        logger.info("Student: {}", student);
+        logger.info("Address: {}", student.getAddress());
+    }
 }
