@@ -108,4 +108,8 @@ public class CourseRepository {
             em.persist(review);
         }
     }
+
+    public void flush() {
+        em.flush();
+    }
 }

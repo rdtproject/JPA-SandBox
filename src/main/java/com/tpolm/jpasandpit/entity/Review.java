@@ -9,7 +9,8 @@ public class Review {
     @GeneratedValue
     private Long id;
 
-    private String rating;
+    @Enumerated(EnumType.STRING)
+    private ReviewRating reviewRating;
 
     @Column
     private String description;
@@ -20,8 +21,8 @@ public class Review {
     public Review() {
     }
 
-    public Review(String rating, String description) {
-        this.rating = rating;
+    public Review(ReviewRating reviewRating, String description) {
+        this.reviewRating = reviewRating;
         this.description = description;
     }
 
@@ -29,12 +30,12 @@ public class Review {
         return id;
     }
 
-    public String getRating() {
-        return rating;
+    public ReviewRating getReviewRating() {
+        return reviewRating;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setReviewRating(ReviewRating reviewRating) {
+        this.reviewRating = reviewRating;
     }
 
     public String getDescription() {
