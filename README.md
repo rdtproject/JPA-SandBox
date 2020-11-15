@@ -499,6 +499,9 @@ public enum ReviewRating {
     ONE, TWO, THREE, FOUR, FIVE;
 }
 ```
+## ToString
+Watch out not to put too many information there - can cause perfomance issues, e.g. lazy initialized properties would be loaded due to some log.info() pronting the whole object data.
+
 ## Antipatterns
 - https://www.developerfusion.com/article/84945/flush-and-clear-or-mapping-antipatterns/
 - http://presentz.org/codemotion12/performance_anti_patterns_in_hibernate_patrycja_wegrzynowicz
