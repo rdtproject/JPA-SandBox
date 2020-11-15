@@ -252,6 +252,7 @@ spring.jpa.properties.hibernate.connection.isolation=2
 - https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth
 
 ## Spring Transactional
+In latest project only Spring Transactional was used. JPA Transactional wasn't used at all.
 - to be checked readonly
 ```java
 @Transactional(readonly = true)
@@ -377,7 +378,7 @@ public enum SharedCacheMode {
 #### To enable caching only what I tell to cache 
 - Only data which is safe to cache between transactions / does not change often.
 ```java
-@Cacheable
+@Cacheable //javax.persistence.Cacheable
 public class Course {
 ```
 #### How to read L2 cache logs
@@ -385,19 +386,78 @@ L2C stands for Lever 2 Cache
 - L2C puts: Entity with selected id was put in cache. Next time any transaction will try to read it, query to db will no longer be needed.
 - L2C hits: When I am looking at the cache for entity with selected nr, and I get the data (query to DB was not needed).
 - L2C misses: Entity with selected id was not cached. Query to DB was required.
+- Test with e.g. http://localhost:8080/courses/10001 having enabled Spring Data Rest
 ```properties
 2020-11-13 21:40:38.120  INFO 20104 --- [           main] i.StatisticalLoggingSessionEventListener : Session Metrics {
-    0 nanoseconds spent acquiring 0 JDBC connections;
+    29800 nanoseconds spent acquiring 1 JDBC connections;
     0 nanoseconds spent releasing 0 JDBC connections;
-    0 nanoseconds spent preparing 0 JDBC statements;
-    0 nanoseconds spent executing 0 JDBC statements;
+    22100 nanoseconds spent preparing 1 JDBC statements;
+    79800 nanoseconds spent executing 1 JDBC statements;
     0 nanoseconds spent executing 0 JDBC batches;
     0 nanoseconds spent performing 0 L2C puts;
-    0 nanoseconds spent performing 0 L2C hits;
+    32300 nanoseconds spent performing 1 L2C hits;
     0 nanoseconds spent performing 0 L2C misses;
     0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
     0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
 }
+```
+- 1 L2C hits because Course with id 10001 was already cached. Each new transaction will just get this course from Cache. 
+- Reviews are not cached (as can change more often), do each time respective DB query will be executed.
+```json
+{
+  "name" : "JPA in 50 steps",
+  "reviews" : [ {
+    "rating" : "5",
+    "description" : "Great course",
+    "_links" : {
+      "course" : {
+        "href" : "http://localhost:8080/courses/10001"
+      }
+    }
+  }, {
+    "rating" : "4",
+    "description" : "Average",
+    "_links" : {
+      "course" : {
+        "href" : "http://localhost:8080/courses/10001"
+      }
+    }
+  } ],
+  "lastUpdateDate" : "2020-11-13T00:00:00",
+  "creationDate" : "2020-11-13T00:00:00",
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/courses/10001"
+    },
+    "course" : {
+      "href" : "http://localhost:8080/courses/10001"
+    }
+  }
+}
+```
+## Soft deletes
+This is Hibernate feature, not JPA feature. Can be used for cases, when all removed data should not be physically removed from DB, but rather marked as "removed".
+- Add isDeleted attribute (respective default column in DB will be is_deleted). Setters, getters not required.
+- Add @SQLDelete annotation and specify JPQL which will be always appended to any "where" query.
+- Add @@Where annotation and specify JPQL to be executed for any query.
+- Does not work for native queries! @Where confition will not be automatically added.
+- Native queries do not set up automatically flag is_deleted, so @SQLDelete is ignored.
+```java
+@SQLDelete(sql = "update Course set is_deleted=true where id=?")
+@Where(clause = "is_deleted = false")
+public class Course {
+	// .....
+	private boolean isDeleted;
+	// .....
+}
+```
+Solution to the concerns with native queries can be to use lifecycle methods
+```java
+	private boolean isDeleted;
+	
+	private void preRemove() {
+		this.isDeleted = true;
+	}
 ```
 
 ## Antipatterns
@@ -406,3 +466,52 @@ L2C stands for Lever 2 Cache
 
 ## Performance
 - https://vladmihalcea.com/books/high-performance-java-persistence/
+
+## SpringDataRest
+Add dependency:
+```xml
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-rest</artifactId>
+</dependency>
+```
+Add annotation @RepositoryRestResource and initial path for RESTful services:
+```java
+@RepositoryRestResource(path = "courses")
+public interface CourseSpringDataRepository extends JpaRepository<Course, Long> {
+```
+In Course entity add annotation @JsonIgnore to avoid infinity loops (Course has Students, but each student can have course, which can have student, which can have...)
+```java
+@ManyToMany(mappedBy = "courses")
+@JsonIgnore
+private List<Student> students = new ArrayList<>();
+```
+
+## Enable H2 Console
+http://localhost:8080/h2-console  
+In application.properties:
+
+```properties
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.data.jpa.repositories.bootstrap-mode=default
+
+#Enabling H2 console
+spring.h2.console.enabled=true
+```
+
+## Enable logging
+Enable SQL logging including query parameters
+```properties
+#Turn statistics on
+spring.jpa.properties.hibernate.generate_statistics=true
+logging.level.org.hibernate.stat=debug
+
+#Show all queries
+spring.jpa.show-sql=true
+
+#Show parameters
+logging.level.org.hibernate.type=trace
+
+#Format queries - do not enable on Production!
+spring.jpa.properties.hibernate.format_sql=true
+```
