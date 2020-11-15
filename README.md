@@ -439,7 +439,9 @@ L2C stands for Lever 2 Cache
 This is Hibernate feature, not JPA feature. Can be used for cases, when all removed data should not be physically removed from DB, but rather marked as "removed".
 - Add isDeleted attribute (respective default column in DB will be is_deleted). Setters, getters not required.
 - Add @SQLDelete annotation and specify JPQL which will be always appended to any "where" query.
-- Add @@Where annotation and specify JPQL to be executed for any query
+- Add @@Where annotation and specify JPQL to be executed for any query.
+- Does not work for native queries! @Where confition will not be automatically added.
+- Native queries do not set up automatically flag is_deleted, so @SQLDelete is ignored.
 ```java
 @SQLDelete(sql = "update Course set is_deleted=true where id=?")
 @Where(clause = "is_deleted = false")
@@ -448,6 +450,14 @@ public class Course {
 	private boolean isDeleted;
 	// .....
 }
+```
+Solution to the concerns with native queries can be to use lifecycle methods
+```java
+	private boolean isDeleted;
+	
+	private void preRemove() {
+		this.isDeleted = true;
+	}
 ```
 
 ## Antipatterns
