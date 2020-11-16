@@ -506,8 +506,25 @@ Watch out not to put too many information there - can cause perfomance issues, e
 - https://www.developerfusion.com/article/84945/flush-and-clear-or-mapping-antipatterns/
 - http://presentz.org/codemotion12/performance_anti_patterns_in_hibernate_patrycja_wegrzynowicz
 
-## Performance
+## Performance tuning
+### Measure and fine tune
+Donald Knuth: We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil.
+- Before any performance tuning it is absolutely mandatory to enable and monitor stats in at least one environment.
+```properties
+#Turn statistics on
+spring.jpa.properties.hibernate.generate_statistics=true
+logging.level.org.hibernate.stat=debug
+```
+### Add indexes
+- To add indexes it is good to check the query execution plan
+- Index is automatically created for the primary key, id.
+- If e.g. Course entity is often searched by name, than it makes sense to add index on name, etc.
 - https://vladmihalcea.com/books/high-performance-java-persistence/
+
+### Appropriate caching
+- First level cache enabled automatically, working on the single transaction level. If too many entoties are stored in L1, it can cause performance issue as well.
+- Second Level caching enables different transactions on the same instance of an application to share the common data. Countries, States, etc. Must be enabled manually. E.g. EhCache.
+- Distributed cache used to cache data across multiple instances of application. E.g. Hazelcast.
 
 ## SpringDataRest
 Add dependency:
