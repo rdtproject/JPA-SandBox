@@ -507,8 +507,9 @@ Watch out not to put too many information there - can cause perfomance issues, e
 - http://presentz.org/codemotion12/performance_anti_patterns_in_hibernate_patrycja_wegrzynowicz
 
 ## Performance tuning
+https://vladmihalcea.com/books/high-performance-java-persistence/
 ### Measure and fine tune
-Donald Knuth: We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil.
+- Donald Knuth: We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil.
 - Before any performance tuning it is absolutely mandatory to enable and monitor stats in at least one environment.
 ```properties
 #Turn statistics on
@@ -519,7 +520,6 @@ logging.level.org.hibernate.stat=debug
 - To add indexes it is good to check the query execution plan
 - Index is automatically created for the primary key, id.
 - If e.g. Course entity is often searched by name, than it makes sense to add index on name, etc.
-- https://vladmihalcea.com/books/high-performance-java-persistence/
 
 ### Appropriate caching
 - First level cache enabled automatically, working on the single transaction level. If too many entoties are stored in L1, it can cause performance issue as well.
