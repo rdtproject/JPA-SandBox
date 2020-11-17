@@ -574,3 +574,6 @@ logging.level.org.hibernate.type=trace
 #Format queries - do not enable on Production!
 spring.jpa.properties.hibernate.format_sql=true
 ```
+
+## Evolutionary Database Design
+- Martin Fowler, Evolutionary database design: https://martinfowler.com/articles/evodb.html 
