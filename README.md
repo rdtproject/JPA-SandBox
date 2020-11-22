@@ -531,6 +531,55 @@ logging.level.org.hibernate.stat=debug
 - Second Level caching enables different transactions on the same instance of an application to share the common data. Countries, States, etc. Must be enabled manually. E.g. EhCache.
 - Distributed cache used to cache data across multiple instances of application. E.g. Hazelcast.
 
+### N+1 problem
+- Occurs for cases as below. Many to many with mode: Lazy. For each loop iteration additional select to DB is executed:
+```java
+    @Test
+    @Transactional
+    public void getAllCourses() {
+        List<Course> courses = em.createNamedQuery(EntityConstans.GET_ALL_COURSES, Course.class)
+                .getResultList();
+
+        for (Course course : courses) {
+            logger.info("Course => {}, Students => {}", course, course.getStudents());
+        }
+    }
+```
+- select "+1"
+```sql
+select
+        course0_.id as id1_0_,
+        course0_.created as created2_0_,
+        course0_.is_deleted as is_delet3_0_,
+        course0_.updated as updated4_0_,
+        course0_.name as name5_0_ 
+    from
+        course course0_ 
+    where
+        (
+            course0_.is_deleted = 0
+        )
+```
+- select N, below is repeated for each loop iteration
+```sql
+select
+        students0_.course_id as course_i2_7_0_,
+        students0_.student_id as student_1_7_0_,
+        student1_.id as id1_6_1_,
+        student1_.city as city2_6_1_,
+        student1_.line1 as line3_6_1_,
+        student1_.line2 as line4_6_1_,
+        student1_.name as name5_6_1_,
+        student1_.passport_id as passport6_6_1_ 
+    from
+        student_course students0_ 
+    inner join
+        student student1_ 
+            on students0_.student_id=student1_.id 
+    where
+        students0_.course_id=?
+```
+
 ## SpringDataRest
 Add dependency:
 ```xml
