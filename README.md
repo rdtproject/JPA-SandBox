@@ -547,7 +547,7 @@ logging.level.org.hibernate.stat=debug
 ```
 - select "+1"
 ```sql
-select
+    select
         course0_.id as id1_0_,
         course0_.created as created2_0_,
         course0_.is_deleted as is_delet3_0_,
@@ -562,7 +562,7 @@ select
 ```
 - select N, below is repeated for each loop iteration
 ```sql
-select
+    select
         students0_.course_id as course_i2_7_0_,
         students0_.student_id as student_1_7_0_,
         student1_.id as id1_6_1_,
