@@ -317,7 +317,8 @@ PersistenceContext -> FirstLevelCache -> SecondLevelCache -> Database
 </table>
 
 ### First Level Cache
-This code will execute query to DB only once because everything is wrapped up into single Transaction (Transactional on the method level) and we are quering the same data.
+- This code will execute query to DB only once because everything is wrapped up into single Transaction (Transactional on the method level) and we are quering the same data.
+- Remember that if L1 Cache becomes to big (Entity Manager keeps to many cached operations) it is starting to become slow.
 ```java
 @Transactional
 public void findByIdFirstLevelCache {  
@@ -343,6 +344,10 @@ public void findByIdFirstLevelCache {
 - Hibernate does not know which data is not going to change, and will be common to multiple transactions (e.g. such data can be list of domains in WPG, list of countries, currencies, and another dictionary-like values)
 - Implementation of L2 cache can be done using EhCache (it is a caching framework)
 - Example how to enable L2 cache: https://www.baeldung.com/hibernate-second-level-cache
+
+### Distributed Cache
+- L2 Cache is used on single JVM, single application instance but many transactions
+- Distrbited cache, e.g. Hazelcast, more complex, used to cache withing multiple application instances
 
 #### Adding required dependencies
 ```java
