@@ -532,6 +532,7 @@ logging.level.org.hibernate.stat=debug
 - Distributed cache used to cache data across multiple instances of application. E.g. Hazelcast.
 
 ### N+1 problem
+- https://www.sipios.com/blog-tech/eliminate-hibernate-n-plus-1-queries 
 - Occurs for cases as below. Many to many with mode: Lazy. For each loop iteration additional select to DB is executed:
 ```java
     @Test
@@ -578,6 +579,27 @@ logging.level.org.hibernate.stat=debug
             on students0_.student_id=student1_.id 
     where
         students0_.course_id=?
+```
+- Solution 1, using Join Fetch
+- JPQL query, use the keyword JOIN FETCH:
+```java
+@NamedQuery(name = GET_ALL_COURSES_FETCH, query = "select c from Course c JOIN FETCH c.students")
+```
+
+- Solution 2, using Entity Graph
+- JPA query, use an entity graph
+```java
+        EntityGraph<Course> entityGraph = em.createEntityGraph(Course.class);
+        entityGraph.addSubgraph("students");
+
+        List<Course> courses = em.createNamedQuery(EntityConstans.GET_ALL_COURSES, Course.class)
+                .setHint("javax.persistence.loadgraph", entityGraph)
+                .getResultList();
+```
+- Or as mentioned in attached tutorial
+```java
+@EntityGraph(attributePaths = {"author"})
+List<Message> getAllBy();
 ```
 
 ## SpringDataRest
