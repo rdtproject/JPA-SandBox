@@ -596,6 +596,19 @@ logging.level.org.hibernate.stat=debug
                 .setHint("javax.persistence.loadgraph", entityGraph)
                 .getResultList();
 ```
+- Can be improved like this
+```java
+public interface GenericDao<T> {
+    /** All attributes specified in the entity graph are FetchType.EAGER 
+	but attributes not specified use their specified type or default if the entity specified nothing */
+	String LOAD_GRAPH_HINT = "javax.persistence.loadgraph";
+	
+    /** All attributes specified in the entity graph will be treated as FetchType.EAGER, 
+	all attributes not specified will be treated as FetchType.LAZY */	
+	String FETCH_GRAPH_HINT = "javax.persistence.fetchgraph";
+}
+```
+
 - Or as mentioned in attached tutorial
 ```java
 @EntityGraph(attributePaths = {"author"})
