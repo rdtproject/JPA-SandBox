@@ -49,26 +49,6 @@ Basic nowledge refresher
    }
 ```
 
-## NamedEntityGraph
-- how is it used for FetchType.LAZY
-```java   
-   @NamedQueries({
-   	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
-   })
-   @NamedEntityGraph(
-   	name = EG_INVOICE_WITH_DETAILS,
-	attributeNodes = {
-		@NamedAttributeNode(creator)
-		@NamedAttributeNode(contact)
-		@NamedAttributeNode(amount)
-		@NamedAttributeNode(processor)
-	}
-   )
-   public class Invoice extends XyzEntity {   	
-   	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
-	public static final String EG_INVOICE_WITH_DETAILS = "InvoiceWithCreator";
-   }
-```
 ## Mapping numbers
 - A BigDecimal is an exact way of representing numbers. A Double has a certain precision. Working with doubles of various magnitudes (say d1=1000.0 and d2=0.001) could result in the 0.001 being dropped alltogether when summing as the difference in magnitude is so large. With BigDecimal this would not happen.
 The disadvantage of BigDecimal is that it's slower, and it's a bit more difficult to program algorithms that way (due to + - * and / not being overloaded).
@@ -596,7 +576,27 @@ logging.level.org.hibernate.stat=debug
                 .setHint("javax.persistence.loadgraph", entityGraph)
                 .getResultList();
 ```
-- Can be improved like this
+#### Solution 2, can be improved like this
+## NamedEntityGraph
+```java   
+   @NamedQueries({
+   	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
+   })
+   @NamedEntityGraph(
+   	name = EG_INVOICE_WITH_DETAILS,
+	attributeNodes = {
+		@NamedAttributeNode(creator)
+		@NamedAttributeNode(contact)
+		@NamedAttributeNode(amount)
+		@NamedAttributeNode(processor)
+	}
+   )
+   public class Invoice extends XyzEntity {   	
+   	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
+	public static final String EG_INVOICE_WITH_DETAILS = "InvoiceWithCreator";
+   }
+```
+
 ```java
 public interface GenericDao<T> {
     /** You specify FETCH as your strategy by importing javax.persistence.fetchgraph in the file containing the entity.
@@ -608,6 +608,18 @@ public interface GenericDao<T> {
         specified in the entity graph are also FetchType.EAGER but attributes not specified use their specified type or default 
 	if the entity specified nothing. */		
 	String LOAD_GRAPH_HINT = "javax.persistence.loadgraph";
+}
+```
+
+```java
+public interface CourseDao extends GenericDao<Course> {	
+}
+```
+```java
+public class CourseDaoImp implements CourseDao {	
+	TypedQuery<Course> typedQuery = entityManager.createNamedQuery(EntityConstans.GET_ALL_COURSES, Course.class);
+	typedQuery.setHint(LOAD_GRAPH_HINT, entityManager.getEntityGraph(EG_INVOICE_WITH_DETAILS));
+	return typedQuery.getResultList();
 }
 ```
 
