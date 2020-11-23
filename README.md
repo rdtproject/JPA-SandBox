@@ -577,7 +577,6 @@ logging.level.org.hibernate.stat=debug
                 .getResultList();
 ```
 #### Solution 2, can be improved like this
-## NamedEntityGraph
 ```java   
    @NamedQueries({
    	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
