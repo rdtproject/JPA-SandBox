@@ -568,6 +568,7 @@ logging.level.org.hibernate.stat=debug
 
 #### Solution 2, using Entity Graph
 - JPA query, use an entity graph
+- http://www.radcortez.com/jpa-entity-graphs/
 ```java
         EntityGraph<Course> entityGraph = em.createEntityGraph(Course.class);
         entityGraph.addSubgraph("students");
