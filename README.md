@@ -580,13 +580,13 @@ logging.level.org.hibernate.stat=debug
     where
         students0_.course_id=?
 ```
-- Solution 1, using Join Fetch
+#### Solution 1, using Join Fetch
 - JPQL query, use the keyword JOIN FETCH:
 ```java
 @NamedQuery(name = GET_ALL_COURSES_FETCH, query = "select c from Course c JOIN FETCH c.students")
 ```
 
-- Solution 2, using Entity Graph
+#### Solution 2, using Entity Graph
 - JPA query, use an entity graph
 ```java
         EntityGraph<Course> entityGraph = em.createEntityGraph(Course.class);
@@ -599,13 +599,15 @@ logging.level.org.hibernate.stat=debug
 - Can be improved like this
 ```java
 public interface GenericDao<T> {
-    /** All attributes specified in the entity graph are FetchType.EAGER 
-	but attributes not specified use their specified type or default if the entity specified nothing */
-	String LOAD_GRAPH_HINT = "javax.persistence.loadgraph";
-	
-    /** All attributes specified in the entity graph will be treated as FetchType.EAGER, 
-	all attributes not specified will be treated as FetchType.LAZY */	
+    /** You specify FETCH as your strategy by importing javax.persistence.fetchgraph in the file containing the entity.
+        In this case, all attributes specified in your entity graph will be treated as FetchType.EAGER, and all attributes
+	not specified will be treated as FetchType.LAZY*/
 	String FETCH_GRAPH_HINT = "javax.persistence.fetchgraph";
+	
+    /** On the other hand, if you specify LOAD as your strategy by importing javax.persistence.loadgraph then all attributes
+        specified in the entity graph are also FetchType.EAGER but attributes not specified use their specified type or default 
+	if the entity specified nothing. */		
+	String LOAD_GRAPH_HINT = "javax.persistence.loadgraph";
 }
 ```
 
