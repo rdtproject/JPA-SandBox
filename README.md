@@ -1,6 +1,8 @@
 # JPA-SandBox
 Basic nowledge refresher
 
+## Courses
+- https://vladmihalcea.teachable.com/courses/high-performance-java-persistence-mach-3-online/lectures/17209608, cool explanation about JDBC or DataSource Proxies
 ## To be clarified, checked
 - Spring java configuration
 ```java
