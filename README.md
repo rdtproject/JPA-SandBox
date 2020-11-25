@@ -106,6 +106,33 @@ private Set<Customer> customers;
 ```
 (There was no mapping on the other side. Example with complex primary key on both sides - address in linking table.)
 
+## FetchMode
+- I think that Spring Data ignores the FetchMode. I always use the @NamedEntityGraph and @EntityGraph annotations when working with Spring Data
+- First of all, @Fetch(FetchMode.JOIN) and @ManyToOne(fetch = FetchType.LAZY) are antagonistic, one instructing an EAGER fetching, while the other suggesting a LAZY fetch.
+- https://www.solidsyntax.be/2013/10/17/fetching-collections-hibernate/ 
+
+```java
+@Entity
+@NamedEntityGraph(name = "GroupInfo.detail",
+  attributeNodes = @NamedAttributeNode("members"))
+public class GroupInfo {
+
+  // default fetch mode is lazy.
+  @ManyToMany
+  List<GroupMember> members = new ArrayList<GroupMember>();
+
+  …
+}
+
+@Repository
+public interface GroupRepository extends CrudRepository<GroupInfo, String> {
+
+  @EntityGraph(value = "GroupInfo.detail", type = EntityGraphType.LOAD)
+  GroupInfo getByGroupName(String name);
+
+}
+```
+
 ## Inheritence strategy
 ### @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 - Default one, adding additional descriptor column do DB (just a string). Efficient as only one DB table, but creates mess with data integrity in DB: nullable columns as not each Object sub type in hierachy implements the same attributes. In other words no joins required (performance) but nullable columns (data integrity issue)
