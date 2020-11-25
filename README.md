@@ -132,7 +132,20 @@ public interface GroupRepository extends CrudRepository<GroupInfo, String> {
 
 }
 ```
+- First of all, @Fetch(FetchMode.JOIN) and @ManyToOne(fetch = FetchType.LAZY) are antagonistic, one instructing an EAGER fetching, while the other suggesting a LAZY fetch.
+- Eager fetching is rarely a good choice and for a predictable behavior, you are better off using the query-time JOIN FETCH directive:
+```java
+public interface PlaceRepository extends JpaRepository<Place, Long>, PlaceRepositoryCustom {
 
+    @Query(value = "SELECT p FROM Place p LEFT JOIN FETCH p.author LEFT JOIN FETCH p.city c LEFT JOIN FETCH c.state where p.id = :id")
+    Place findById(@Param("id") int id);
+}
+
+public interface CityRepository extends JpaRepository<City, Long>, CityRepositoryCustom { 
+    @Query(value = "SELECT c FROM City c LEFT JOIN FETCH c.state where c.id = :id")   
+    City findById(@Param("id") int id);
+}
+```
 ## Inheritence strategy
 ### @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 - Default one, adding additional descriptor column do DB (just a string). Efficient as only one DB table, but creates mess with data integrity in DB: nullable columns as not each Object sub type in hierachy implements the same attributes. In other words no joins required (performance) but nullable columns (data integrity issue)
