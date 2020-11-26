@@ -1,6 +1,8 @@
 # JPA-SandBox
 Basic nowledge refresher
 
+## Courses
+- https://vladmihalcea.teachable.com/courses/high-performance-java-persistence-mach-3-online/lectures/17209608, cool explanation about JDBC or DataSource Proxies
 ## To be clarified, checked
 - Spring java configuration
 ```java
@@ -49,26 +51,6 @@ Basic nowledge refresher
    }
 ```
 
-## NamedEntityGraph
-- how is it used for FetchType.LAZY
-```java   
-   @NamedQueries({
-   	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
-   })
-   @NamedEntityGraph(
-   	name = EG_INVOICE_WITH_DETAILS,
-	attributeNodes = {
-		@NamedAttributeNode(creator)
-		@NamedAttributeNode(contact)
-		@NamedAttributeNode(amount)
-		@NamedAttributeNode(processor)
-	}
-   )
-   public class Invoice extends XyzEntity {   	
-   	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
-	public static final String EG_INVOICE_WITH_DETAILS = "InvoiceWithCreator";
-   }
-```
 ## Mapping numbers
 - A BigDecimal is an exact way of representing numbers. A Double has a certain precision. Working with doubles of various magnitudes (say d1=1000.0 and d2=0.001) could result in the 0.001 being dropped alltogether when summing as the difference in magnitude is so large. With BigDecimal this would not happen.
 The disadvantage of BigDecimal is that it's slower, and it's a bit more difficult to program algorithms that way (due to + - * and / not being overloaded).
@@ -126,6 +108,46 @@ private Set<Customer> customers;
 ```
 (There was no mapping on the other side. Example with complex primary key on both sides - address in linking table.)
 
+## FetchMode
+- I think that Spring Data ignores the FetchMode. I always use the @NamedEntityGraph and @EntityGraph annotations when working with Spring Data
+- First of all, @Fetch(FetchMode.JOIN) and @ManyToOne(fetch = FetchType.LAZY) are antagonistic, one instructing an EAGER fetching, while the other suggesting a LAZY fetch.
+- https://www.solidsyntax.be/2013/10/17/fetching-collections-hibernate/ 
+
+```java
+@Entity
+@NamedEntityGraph(name = "GroupInfo.detail",
+  attributeNodes = @NamedAttributeNode("members"))
+public class GroupInfo {
+
+  // default fetch mode is lazy.
+  @ManyToMany
+  List<GroupMember> members = new ArrayList<GroupMember>();
+
+  …
+}
+
+@Repository
+public interface GroupRepository extends CrudRepository<GroupInfo, String> {
+
+  @EntityGraph(value = "GroupInfo.detail", type = EntityGraphType.LOAD)
+  GroupInfo getByGroupName(String name);
+
+}
+```
+- First of all, @Fetch(FetchMode.JOIN) and @ManyToOne(fetch = FetchType.LAZY) are antagonistic, one instructing an EAGER fetching, while the other suggesting a LAZY fetch.
+- Eager fetching is rarely a good choice and for a predictable behavior, you are better off using the query-time JOIN FETCH directive:
+```java
+public interface PlaceRepository extends JpaRepository<Place, Long>, PlaceRepositoryCustom {
+
+    @Query(value = "SELECT p FROM Place p LEFT JOIN FETCH p.author LEFT JOIN FETCH p.city c LEFT JOIN FETCH c.state where p.id = :id")
+    Place findById(@Param("id") int id);
+}
+
+public interface CityRepository extends JpaRepository<City, Long>, CityRepositoryCustom { 
+    @Query(value = "SELECT c FROM City c LEFT JOIN FETCH c.state where c.id = :id")   
+    City findById(@Param("id") int id);
+}
+```
 ## Inheritence strategy
 ### @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 - Default one, adding additional descriptor column do DB (just a string). Efficient as only one DB table, but creates mess with data integrity in DB: nullable columns as not each Object sub type in hierachy implements the same attributes. In other words no joins required (performance) but nullable columns (data integrity issue)
@@ -172,7 +194,7 @@ You can tell if you need one or the other by answering this questions: is there 
 If yes, then the base class is in fact an entity, and you should use entity inheritance. If no, then the base class is in fact a class that contains attributes and methods that are common to several unrelated entities, and you should use a mapped superclass.
 
 ## DeleteOrphan
-- ????
+- https://vladmihalcea.com/orphanremoval-jpa-hibernate/
 
 ## @EntityListeners
 - ???
@@ -317,7 +339,8 @@ PersistenceContext -> FirstLevelCache -> SecondLevelCache -> Database
 </table>
 
 ### First Level Cache
-This code will execute query to DB only once because everything is wrapped up into single Transaction (Transactional on the method level) and we are quering the same data.
+- This code will execute query to DB only once because everything is wrapped up into single Transaction (Transactional on the method level) and we are quering the same data.
+- Remember that if L1 Cache becomes to big (Entity Manager keeps to many cached operations) it is starting to become slow.
 ```java
 @Transactional
 public void findByIdFirstLevelCache {  
@@ -343,6 +366,10 @@ public void findByIdFirstLevelCache {
 - Hibernate does not know which data is not going to change, and will be common to multiple transactions (e.g. such data can be list of domains in WPG, list of countries, currencies, and another dictionary-like values)
 - Implementation of L2 cache can be done using EhCache (it is a caching framework)
 - Example how to enable L2 cache: https://www.baeldung.com/hibernate-second-level-cache
+
+### Distributed Cache
+- L2 Cache is used on single JVM, single application instance but many transactions
+- Distrbited cache, e.g. Hazelcast, more complex, used to cache withing multiple application instances
 
 #### Adding required dependencies
 ```java
@@ -487,13 +514,162 @@ create table student (
         primary key (id)
 )
 ```
+## Using Enums
+Enums which should be stored in DB has to be annotated as below.
+Default: Ordinal, can be updated to String.
+```java
+@Enumerated(EnumType.STRING)
+private ReviewRating reviewRating;
+```
+```java
+public enum ReviewRating {
+    ONE, TWO, THREE, FOUR, FIVE;
+}
+```
+## ToString
+Watch out not to put too many information there - can cause perfomance issues, e.g. lazy initialized properties would be loaded due to some log.info() pronting the whole object data.
 
 ## Antipatterns
 - https://www.developerfusion.com/article/84945/flush-and-clear-or-mapping-antipatterns/
 - http://presentz.org/codemotion12/performance_anti_patterns_in_hibernate_patrycja_wegrzynowicz
 
-## Performance
-- https://vladmihalcea.com/books/high-performance-java-persistence/
+## Performance tuning
+https://vladmihalcea.com/books/high-performance-java-persistence/
+### Measure and fine tune
+- Donald Knuth: We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil.
+- Before any performance tuning it is absolutely mandatory to enable and monitor stats in at least one environment.
+```properties
+#Turn statistics on
+spring.jpa.properties.hibernate.generate_statistics=true
+logging.level.org.hibernate.stat=debug
+```
+### Add indexes
+- To add indexes it is good to check the query execution plan
+- Index is automatically created for the primary key, id.
+- If e.g. Course entity is often searched by name, than it makes sense to add index on name, etc.
+
+### Appropriate caching
+- First level cache enabled automatically, working on the single transaction level. If too many entoties are stored in L1, it can cause performance issue as well.
+- Second Level caching enables different transactions on the same instance of an application to share the common data. Countries, States, etc. Must be enabled manually. E.g. EhCache.
+- Distributed cache used to cache data across multiple instances of application. E.g. Hazelcast.
+
+### N+1 problem
+- https://www.sipios.com/blog-tech/eliminate-hibernate-n-plus-1-queries 
+- Occurs for cases as below. Many to many with mode: Lazy. For each loop iteration additional select to DB is executed:
+```java
+    @Test
+    @Transactional
+    public void getAllCourses() {
+        List<Course> courses = em.createNamedQuery(EntityConstans.GET_ALL_COURSES, Course.class)
+                .getResultList();
+
+        for (Course course : courses) {
+            logger.info("Course => {}, Students => {}", course, course.getStudents());
+        }
+    }
+```
+- select "+1"
+```sql
+    select
+        course0_.id as id1_0_,
+        course0_.created as created2_0_,
+        course0_.is_deleted as is_delet3_0_,
+        course0_.updated as updated4_0_,
+        course0_.name as name5_0_ 
+    from
+        course course0_ 
+    where
+        (
+            course0_.is_deleted = 0
+        )
+```
+- select N, below is repeated for each loop iteration
+```sql
+    select
+        students0_.course_id as course_i2_7_0_,
+        students0_.student_id as student_1_7_0_,
+        student1_.id as id1_6_1_,
+        student1_.city as city2_6_1_,
+        student1_.line1 as line3_6_1_,
+        student1_.line2 as line4_6_1_,
+        student1_.name as name5_6_1_,
+        student1_.passport_id as passport6_6_1_ 
+    from
+        student_course students0_ 
+    inner join
+        student student1_ 
+            on students0_.student_id=student1_.id 
+    where
+        students0_.course_id=?
+```
+#### Solution 1, using Join Fetch
+- JPQL query, use the keyword JOIN FETCH:
+```java
+@NamedQuery(name = GET_ALL_COURSES_FETCH, query = "select c from Course c JOIN FETCH c.students")
+```
+
+#### Solution 2, using Entity Graph
+- JPA query, use an entity graph
+- http://www.radcortez.com/jpa-entity-graphs/
+```java
+        EntityGraph<Course> entityGraph = em.createEntityGraph(Course.class);
+        entityGraph.addSubgraph("students");
+
+        List<Course> courses = em.createNamedQuery(EntityConstans.GET_ALL_COURSES, Course.class)
+                .setHint("javax.persistence.loadgraph", entityGraph)
+                .getResultList();
+```
+#### Solution 2, can be improved like this
+```java   
+   @NamedQueries({
+   	@NamedQuery(name = NQ_GET_ALL_INVOICES, query = "select i from Invoice i")
+   })
+   @NamedEntityGraph(
+   	name = EG_INVOICE_WITH_DETAILS,
+	attributeNodes = {
+		@NamedAttributeNode(creator)
+		@NamedAttributeNode(contact)
+		@NamedAttributeNode(amount)
+		@NamedAttributeNode(processor)
+	}
+   )
+   public class Invoice extends XyzEntity {   	
+   	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
+	public static final String EG_INVOICE_WITH_DETAILS = "InvoiceWithCreator";
+   }
+```
+
+```java
+public interface GenericDao<T> {
+    /** You specify FETCH as your strategy by importing javax.persistence.fetchgraph in the file containing the entity.
+        In this case, all attributes specified in your entity graph will be treated as FetchType.EAGER, and all attributes
+	not specified will be treated as FetchType.LAZY*/
+	String FETCH_GRAPH_HINT = "javax.persistence.fetchgraph";
+	
+    /** On the other hand, if you specify LOAD as your strategy by importing javax.persistence.loadgraph then all attributes
+        specified in the entity graph are also FetchType.EAGER but attributes not specified use their specified type or default 
+	if the entity specified nothing. */		
+	String LOAD_GRAPH_HINT = "javax.persistence.loadgraph";
+}
+```
+
+```java
+public interface CourseDao extends GenericDao<Course> {	
+}
+```
+```java
+public class CourseDaoImp implements CourseDao {	
+	TypedQuery<Course> typedQuery = entityManager.createNamedQuery(EntityConstans.GET_ALL_COURSES, Course.class);
+	typedQuery.setHint(LOAD_GRAPH_HINT, entityManager.getEntityGraph(EG_INVOICE_WITH_DETAILS));
+	return typedQuery.getResultList();
+}
+```
+
+- Or as mentioned in attached tutorial
+```java
+@EntityGraph(attributePaths = {"author"})
+List<Message> getAllBy();
+```
 
 ## SpringDataRest
 Add dependency:
@@ -543,3 +719,6 @@ logging.level.org.hibernate.type=trace
 #Format queries - do not enable on Production!
 spring.jpa.properties.hibernate.format_sql=true
 ```
+
+## Evolutionary Database Design
+- Martin Fowler, Evolutionary database design: https://martinfowler.com/articles/evodb.html 
