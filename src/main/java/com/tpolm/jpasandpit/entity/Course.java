@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.tpolm.jpasandpit.entity.EntityConstans.GET_ALL_COURSES;
+import static com.tpolm.jpasandpit.entity.EntityConstans.GET_ALL_COURSES_FETCH;
 
 @Entity
-@NamedQueries(
-        @NamedQuery(name = GET_ALL_COURSES, query = "select c from Course c")
-)
+@NamedQueries({
+        @NamedQuery(name = GET_ALL_COURSES, query = "select c from Course c"),
+        @NamedQuery(name = GET_ALL_COURSES_FETCH, query = "select c from Course c JOIN FETCH c.students")
+})
 @Cacheable
 @SQLDelete(sql = "update Course set is_deleted=true where id=?")
 @Where(clause = "is_deleted = false")

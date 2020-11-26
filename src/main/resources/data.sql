@@ -6,9 +6,9 @@ insert into passport(id, number) values (4001, 'E123654');
 insert into passport(id, number) values (4002, 'J764293');
 insert into passport(id, number) values (4003, 'Z323643');
 
-insert into student(id, name, passport_id) values (2001, 'Ranga', 4002);
-insert into student(id, name, passport_id) values (2002, 'Janusz', 4001);
-insert into student(id, name, passport_id) values (2003, 'Zenon', 4003);
+insert into student(id, name, passport_id, city, line1, line2) values (2001, 'Ranga', 4002, 'Gdynia', 'Badennerstrasse', '8');
+insert into student(id, name, passport_id, city, line1, line2) values (2002, 'Janusz', 4001, 'Zurich', 'Altestrasse', '4');
+insert into student(id, name, passport_id, city, line1, line2) values (2003, 'Zenon', 4003, 'Kopenhaga', 'Shonestrasse', '57');
 
 insert into review(id, review_rating, description, course_id) values (5001, 'ONE', 'Great course', 10001);
 insert into review(id, review_rating, description, course_id) values (5002, 'TWO', 'Average', 10001);
