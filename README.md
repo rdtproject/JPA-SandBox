@@ -1,5 +1,5 @@
 # JPA-SandBox
-Basic nowledge refresher
+Basic nowledge refresher.
 
 ## Courses
 - https://vladmihalcea.teachable.com/courses/high-performance-java-persistence-mach-3-online/lectures/17209608, cool explanation about JDBC or DataSource Proxies
