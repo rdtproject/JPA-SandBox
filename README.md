@@ -1,6 +1,11 @@
 # JPA-SandBox
 Basic nowledge refresher.
 
+## Building this project
+- https://www.jenkins.io/blog/2017/02/07/declarative-maven-project/
+- sudo docker network inspect bridge
+- Jenkins pipeline file: pipeline.groovy (extension added to read file in VS code)
+
 ## Courses
 - https://vladmihalcea.teachable.com/courses/high-performance-java-persistence-mach-3-online/lectures/17209608, cool explanation about JDBC or DataSource Proxies
 ## To be clarified, checked
