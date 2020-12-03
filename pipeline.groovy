@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk "openjdk-11"
+    }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'Rdt', url: 'https://github.com/rdtproject/JPA-SandBox.git'
+            }
+        }
+        stage('Build') {
+            steps {                            
+                sh './mvnw clean package'
+            }
+
+            post {                
+                always {
+                    junit '**/target/surefire-reports/TEST-*.xml'                    
+                    emailext attachLog: true, body: 'Please go to ${BUILD_URL} and verify the build', compressLog: true, subject: 'Job \'${JOB_NAME}\' (${BUILD_NUMBER}) is waiting for input', to: 'test@jenkins'
+                }
+            }
+        }
+    }
+}
