@@ -25,5 +25,11 @@ pipeline {
                 }
             }
         }
+
+        stage('SonarQube analysis') {
+            withSonarQubeEnv() {                
+                sh './mvnw sonar:sonar'
+            }
+        }        
     }
 }
