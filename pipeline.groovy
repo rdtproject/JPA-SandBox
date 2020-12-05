@@ -25,13 +25,13 @@ pipeline {
                 }
             }
         }
-
         stage('SonarQube analysis') {
             steps {
+                // this groovy method comes from Sonar plugin installed in Jenkins (Manage Jenkins, configure system)
                 withSonarQubeEnv(installationName: 'Sonar on NAS') {                
                     sh './mvnw sonar:sonar'            
                 }
             }
         }        
-    }
+    }git
 }
