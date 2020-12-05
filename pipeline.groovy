@@ -27,8 +27,10 @@ pipeline {
         }
 
         stage('SonarQube analysis') {
-            withSonarQubeEnv() {                
-                sh './mvnw sonar:sonar'
+            steps {
+                withSonarQubeEnv(installationName: 'Sonar on NAS') {                
+                    sh './mvnw sonar:sonar'            
+                }
             }
         }        
     }
