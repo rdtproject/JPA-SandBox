@@ -527,6 +527,28 @@ create table student (
         primary key (id)
 )
 ```
+## EmbeddedId
+In introduction to microservices such an example:
+```java
+@Entity
+public class TourRating {    
+    @EmbeddedId
+    private TourRatingPk pk;
+    ....
+}
+```
+```java
+@Embeddable
+public class TourRatingPk implements Serializable {
+
+    @ManyToOne
+    private Tour tour;
+
+    @Column(insertable = false, updatable = false,nullable = false)
+    private Integer customerId;
+    ...
+}
+```
 ## Using Enums
 Enums which should be stored in DB has to be annotated as below.
 Default: Ordinal, can be updated to String.
