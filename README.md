@@ -19,6 +19,10 @@ Basic nowledge refresher.
    @EnableCaching
    public class AppConfig {
 ```
+## FlyWay
+- How to use Flyway in Java #1: https://www.baeldung.com/database-migrations-with-flyway
+- How to use Flyway in Java #2:https://reflectoring.io/database-migration-spring-boot-flyway/
+
 ## General reminder
 - @Transactional can be used on the repository side or e.g. on unit test method side. In each case it ensures that the whole method is executed, or rolled back (rollback works also for changes enforced to be saved to DB by calling flush()). It also keeps persistence context (implementation of EntityManager interface) active, meaning e.g. lazy initialization is working correctly.
 - @Transactional topic 2: Hibernate waits to the last possible moment before saving changes to DB (performance optimization, and easy possibility of rollback)
