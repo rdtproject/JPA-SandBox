@@ -1,13 +1,14 @@
 # JPA-SandBox
 Basic nowledge refresher.
-
 ## Building this project
 - https://www.jenkins.io/blog/2017/02/07/declarative-maven-project/
 - sudo docker network inspect bridge
 - Jenkins pipeline file: pipeline.groovy (extension added to read file in VS code)
 - MailHog: http://192.168.1.2:32778/#
 - ssh 192.168.1.2 -p 45
-
+## Spring Data JPA repositiories comparison
+- CrudRepository, JpaRepository, and PagingAndSortingRepository in Spring Data
+- https://www.baeldung.com/spring-data-repositories
 ## Courses
 - https://vladmihalcea.teachable.com/courses/high-performance-java-persistence-mach-3-online/lectures/17209608, cool explanation about JDBC or DataSource Proxies
 ## To be clarified, checked
@@ -29,7 +30,6 @@ Basic nowledge refresher.
 - @Transactional can be used on the repository side or e.g. on unit test method side. In each case it ensures that the whole method is executed, or rolled back (rollback works also for changes enforced to be saved to DB by calling flush()). It also keeps persistence context (implementation of EntityManager interface) active, meaning e.g. lazy initialization is working correctly.
 - @Transactional topic 2: Hibernate waits to the last possible moment before saving changes to DB (performance optimization, and easy possibility of rollback)
 - Bi-directional transactions are designed to avoid redundancy in DB. Owning side of the relation (DB table) contains foreign key. Owned side of the relation does have to contain any foreign key, but in JPA annotation required statement: mappedBy = "passport" where passport is the attribute name from the owning entity.
-
 ## NamedQueries
 ```java   
    @NamedQueries({
@@ -39,7 +39,6 @@ Basic nowledge refresher.
    	public static final String NQ_GET_ALL_INVOICES = "Invoice.getAllInvoices";
    }
 ```
-
 ## NamedNativeQueries
 - Abstract examples, more advanced implementation to be analyzed further
 ```java   
