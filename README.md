@@ -21,7 +21,7 @@ Basic nowledge refresher.
 ```
 ## FlyWay
 - How to use Flyway in Java #1: https://www.baeldung.com/database-migrations-with-flyway
-- How to use Flyway in Java #2:https://reflectoring.io/database-migration-spring-boot-flyway/
+- How to use Flyway in Java #2: https://reflectoring.io/database-migration-spring-boot-flyway/
 ## Liquibase
 - https://www.baeldung.com/liquibase-refactor-schema-of-java-app
 - https://macbloglive.wordpress.com/
