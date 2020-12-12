@@ -6,6 +6,8 @@ Basic nowledge refresher.
 - Jenkins pipeline file: pipeline.groovy (extension added to read file in VS code)
 - MailHog: http://192.168.1.2:32778/#
 - ssh 192.168.1.2 -p 45
+## Testing JPA Queries with Spring Boot
+- https://reflectoring.io/spring-boot-data-jpa-test/
 ## Spring Data JPA repositiories comparison
 - CrudRepository, JpaRepository, and PagingAndSortingRepository in Spring Data
 - https://www.baeldung.com/spring-data-repositories
