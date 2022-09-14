@@ -758,3 +758,9 @@ spring.jpa.properties.hibernate.format_sql=true
 
 ## Evolutionary Database Design
 - Martin Fowler, Evolutionary database design: https://martinfowler.com/articles/evodb.html 
+
+#Equals, HashCode contracts
+- Never use Lombok @Data in entities: https://www.jpa-buddy.com/blog/lombok-and-jpa-what-may-go-wrong/
+- https://topic.alibabacloud.com/a/don39t-let-hibernate-steal-your-identity_8_8_31778477.html
+- https://www.youtube.com/watch?v=YoF3RcxbVQ4 
+- https://sztukakodu.pl/equals-hashcode/
